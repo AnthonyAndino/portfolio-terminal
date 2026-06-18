@@ -51,3 +51,5 @@ tmp-old-portfolio/
 # local scripts
 play-dino.bat
 python-dino/
+
+.vercel

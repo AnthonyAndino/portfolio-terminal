@@ -39,3 +39,15 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local dev / agent files
+.superpowers/
+CLAUDE.md
+AGENTS.md
+
+# old/backup files
+tmp-old-portfolio/
+
+# local scripts
+play-dino.bat
+python-dino/

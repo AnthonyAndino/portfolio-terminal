@@ -1,26 +1,166 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html, body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    font-family: 'JetBrains Mono', monospace;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+    background: linear-gradient(135deg, #0a0015 0%, #0d1117 50%, #100818 100%);
+    color: #e6edf3;
+}
+
+/* Scanlines CRT overlay */
+.scanlines {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 0, 0, 0.08) 2px,
+        rgba(0, 0, 0, 0.08) 4px
+    );
+}
+
+/* Phosphor glow utilities */
+.glow-green {
+    text-shadow:
+        0 0 4px rgba(126, 231, 135, 0.6),
+        0 0 8px rgba(126, 231, 135, 0.3),
+        0 0 16px rgba(126, 231, 135, 0.1);
+}
+
+.glow-blue {
+    text-shadow:
+        0 0 4px rgba(121, 192, 255, 0.6),
+        0 0 8px rgba(121, 192, 255, 0.3);
+}
+
+.glow-border-green {
+    box-shadow:
+        0 0 4px rgba(126, 231, 135, 0.15),
+        0 0 8px rgba(126, 231, 135, 0.08),
+        inset 0 0 4px rgba(126, 231, 135, 0.05);
+}
+
+/* Background orbs */
+.orb {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(100px);
+    opacity: 0.12;
+    pointer-events: none;
+    will-change: transform;
+    z-index: -1;
+}
+
+.orb-1 {
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, #7c3aed 0%, transparent 70%);
+    top: -200px;
+    left: -200px;
+    animation: orbFloatA 25s ease-in-out infinite;
+}
+
+.orb-2 {
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, #7ee787 0%, transparent 70%);
+    bottom: -150px;
+    right: -150px;
+    animation: orbFloatB 30s ease-in-out infinite;
+}
+
+.orb-3 {
+    width: 350px;
+    height: 350px;
+    background: radial-gradient(circle, #79c0ff 0%, transparent 70%);
+    top: 40%;
+    left: 60%;
+    animation: orbFloatC 20s ease-in-out infinite;
+}
+
+@keyframes orbFloatA {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(80px, -60px) scale(1.1); }
+    66% { transform: translate(-40px, 50px) scale(0.95); }
+}
+
+@keyframes orbFloatB {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(-70px, 40px) scale(1.15); }
+    66% { transform: translate(50px, -30px) scale(0.9); }
+}
+
+@keyframes orbFloatC {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(60px, 40px) scale(1.05); }
+}
+
+/* Subtle grid */
+body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-image:
+        linear-gradient(rgba(126, 231, 135, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(126, 231, 135, 0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .orb { animation: none; }
+}
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(126, 231, 135, 0.2); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(126, 231, 135, 0.4); }
+::selection { background: rgba(126, 231, 135, 0.25); }
+
+/* Smooth transitions for focus-within glow */
+*:focus-within {
+    transition-duration: 300ms;
+}
+
+/* Blinking colon for clock */
+@keyframes blink-colon {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.2; }
+}
+.blink-colon {
+    animation: blink-colon 1s step-end infinite;
+}
+
+/* Blinking cursor for terminal input */
+@keyframes cursor-blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+}
+
+input[type="text"]:focus,
+input:focus {
+    caret-color: #7ee787;
+}
+
+/* Canvas crisp pixels */
+canvas {
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+}
+
+/* Backdrop blur support */
+@supports (backdrop-filter: blur(8px)) {
+    .backdrop-blur-sm {
+        backdrop-filter: blur(8px);
+    }
 }

@@ -32,8 +32,7 @@ body {
 .glow-green {
     text-shadow:
         0 0 4px rgba(126, 231, 135, 0.6),
-        0 0 8px rgba(126, 231, 135, 0.3),
-        0 0 16px rgba(126, 231, 135, 0.1);
+        0 0 8px rgba(126, 231, 135, 0.35);
 }
 
 .glow-blue {
@@ -53,34 +52,35 @@ body {
 .orb {
     position: fixed;
     border-radius: 50%;
-    filter: blur(100px);
-    opacity: 0.12;
+    filter: blur(40px);
+    opacity: 0.08;
     pointer-events: none;
     will-change: transform;
+    contain: layout style;
     z-index: -1;
 }
 
 .orb-1 {
-    width: 600px;
-    height: 600px;
+    width: 400px;
+    height: 400px;
     background: radial-gradient(circle, #7c3aed 0%, transparent 70%);
-    top: -200px;
-    left: -200px;
+    top: -150px;
+    left: -150px;
     animation: orbFloatA 25s ease-in-out infinite;
 }
 
 .orb-2 {
-    width: 500px;
-    height: 500px;
+    width: 300px;
+    height: 300px;
     background: radial-gradient(circle, #7ee787 0%, transparent 70%);
-    bottom: -150px;
-    right: -150px;
+    bottom: -100px;
+    right: -100px;
     animation: orbFloatB 30s ease-in-out infinite;
 }
 
 .orb-3 {
-    width: 350px;
-    height: 350px;
+    width: 250px;
+    height: 250px;
     background: radial-gradient(circle, #79c0ff 0%, transparent 70%);
     top: 40%;
     left: 60%;
@@ -88,21 +88,31 @@ body {
 }
 
 @keyframes orbFloatA {
-    0%, 100% { transform: translate(0, 0) scale(1); }
-    33% { transform: translate(80px, -60px) scale(1.1); }
-    66% { transform: translate(-40px, 50px) scale(0.95); }
+    0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+    33% { transform: translate3d(50px, -40px, 0) scale(1.05); }
+    66% { transform: translate3d(-30px, 30px, 0) scale(0.95); }
 }
 
 @keyframes orbFloatB {
-    0%, 100% { transform: translate(0, 0) scale(1); }
-    33% { transform: translate(-70px, 40px) scale(1.15); }
-    66% { transform: translate(50px, -30px) scale(0.9); }
+    0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+    33% { transform: translate3d(-40px, 30px, 0) scale(1.1); }
+    66% { transform: translate3d(30px, -20px, 0) scale(0.95); }
 }
 
 @keyframes orbFloatC {
-    0%, 100% { transform: translate(0, 0) scale(1); }
-    50% { transform: translate(60px, 40px) scale(1.05); }
+    0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+    50% { transform: translate3d(40px, 30px, 0) scale(1.05); }
 }
+
+/* Performant network status pulse using opacity only */
+@keyframes light-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.35; }
+}
+.light-pulse {
+    animation: light-pulse 2s ease-in-out infinite;
+}
+
 
 /* Subtle grid */
 body::after {

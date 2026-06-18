@@ -1,14 +1,24 @@
 'use client';
 import { useEffect, useState } from 'react';
 
+interface StatsState {
+    workspace: number;
+    cpu: number;
+    ram: number;
+    netRx: number;
+    netTx: number;
+}
+
 export default function StatusBar({ lang = 'es' }: { lang?: 'es' | 'en' }) {
     const [time, setTime] = useState('');
     const [date, setDate] = useState('');
-    const [cpu, setCpu] = useState(12);
-    const [ram, setRam] = useState(1.4);
-    const [workspace, setWorkspace] = useState(1);
-    const [netRx, setNetRx] = useState(1.2);
-    const [netTx, setNetTx] = useState(0.4);
+    const [stats, setStats] = useState<StatsState>({
+        workspace: 1,
+        cpu: 12,
+        ram: 1.4,
+        netRx: 1.2,
+        netTx: 0.4,
+    });
 
     useEffect(() => {
         function tick() {
@@ -24,48 +34,50 @@ export default function StatusBar({ lang = 'es' }: { lang?: 'es' | 'en' }) {
 
     useEffect(() => {
         const interval = setInterval(() => {
-            setWorkspace(prev => prev >= 4 ? 1 : prev + 1);
-            setCpu(prev => {
-                const change = Math.floor(Math.random() * 15) - 5;
-                const next = prev + change;
-                return Math.max(5, Math.min(55, next));
+            setStats(prev => {
+                const changeWorkspace = prev.workspace >= 4 ? 1 : prev.workspace + 1;
+                
+                const cpuChange = Math.floor(Math.random() * 15) - 5;
+                const nextCpu = Math.max(5, Math.min(55, prev.cpu + cpuChange));
+                
+                const ramChange = (Math.random() * 0.1) - 0.05;
+                const nextRam = parseFloat(Math.max(1.2, Math.min(1.8, prev.ram + ramChange)).toFixed(2));
+                
+                const rxChange = (Math.random() * 0.8) - 0.3;
+                const nextRx = parseFloat(Math.max(0.1, Math.min(3.5, prev.netRx + rxChange)).toFixed(1));
+                
+                const txChange = (Math.random() * 0.5) - 0.2;
+                const nextTx = parseFloat(Math.max(0.05, Math.min(2.0, prev.netTx + txChange)).toFixed(1));
+
+                return {
+                    workspace: changeWorkspace,
+                    cpu: nextCpu,
+                    ram: nextRam,
+                    netRx: nextRx,
+                    netTx: nextTx,
+                };
             });
-            setRam(prev => {
-                const change = (Math.random() * 0.1) - 0.05;
-                const next = prev + change;
-                return parseFloat(Math.max(1.2, Math.min(1.8, next)).toFixed(2));
-            });
-            setNetRx(prev => {
-                const change = (Math.random() * 0.8) - 0.3;
-                const next = prev + change;
-                return parseFloat(Math.max(0.1, Math.min(3.5, next)).toFixed(1));
-            });
-            setNetTx(prev => {
-                const change = (Math.random() * 0.5) - 0.2;
-                const next = prev + change;
-                return parseFloat(Math.max(0.05, Math.min(2.0, next)).toFixed(1));
-            });
-        }, 1200);
+        }, 3000);
         return () => clearInterval(interval);
     }, []);
 
     return (
         <div className="flex items-center justify-between px-4 py-1.5 bg-black/40 border-b border-[#7ee787]/10 text-[11px] font-mono select-none">
             <div className="flex items-center gap-4">
-                <span className="text-[#d9a066] font-bold">[Workspace: {workspace}]</span>
+                <span className="text-[#d9a066] font-bold">[Workspace: {stats.workspace}]</span>
                 <span className="text-[#6e7681]">|</span>
                 <span className="text-[#6e7681]">
-                    CPU: <span className="text-[#7ee787] glow-green font-bold transition-all duration-300">{cpu}%</span>
+                    CPU: <span className="text-[#7ee787] glow-green font-bold transition-all duration-300">{stats.cpu}%</span>
                 </span>
                 <span className="text-[#6e7681]">|</span>
                 <span className="text-[#6e7681]">
-                    RAM: <span className="text-[#7ee787] glow-green font-bold transition-all duration-300">{ram}G</span>/8G
+                    RAM: <span className="text-[#7ee787] glow-green font-bold transition-all duration-300">{stats.ram}G</span>/8G
                 </span>
                 <span className="text-[#6e7681]">|</span>
                 <span className="text-[#6e7681] flex items-center gap-1.5">
                     Net: <span className="text-[#7ee787] font-bold flex items-center gap-1">
-                        <span className="w-1.5 h-1.5 rounded-full bg-[#7ee787] glow-green animate-pulse" />
-                        ↓{netRx} ↑{netTx}
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#7ee787] glow-green light-pulse" />
+                        ↓{stats.netRx} ↑{stats.netTx}
                     </span>
                 </span>
             </div>
@@ -76,3 +88,4 @@ export default function StatusBar({ lang = 'es' }: { lang?: 'es' | 'en' }) {
         </div>
     );
 }
+

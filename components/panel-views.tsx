@@ -43,6 +43,12 @@ function useEsc(onBack: () => void) {
 
 export function WhoamiView({ onBack, lang }: ViewProps) {
     useEsc(onBack);
+    const stats = [
+        { label: lang === 'es' ? 'Proyectos' : 'Projects', value: '6+' },
+        { label: lang === 'es' ? 'Tecnologías' : 'Technologies', value: '20+' },
+        { label: lang === 'es' ? 'Estudiando' : 'Learning', value: lang === 'es' ? '4+ años' : '4+ years' },
+        { label: lang === 'es' ? 'Idiomas' : 'Languages', value: '2' },
+    ];
     return (
         <div className="flex flex-col h-full">
             <Header title={lang === 'es' ? '◆ QUIEN SOY' : '◆ WHOAMI'} onBack={onBack} lang={lang} icon={<User className="w-3.5 h-3.5 stroke-[2] shrink-0 text-[#7ee787]" />} />
@@ -60,23 +66,32 @@ export function WhoamiView({ onBack, lang }: ViewProps) {
                     </div>
                 </div>
 
+                <div className="grid grid-cols-4 gap-2">
+                    {stats.map((s, i) => (
+                        <div key={i} className="border border-[#7ee787]/15 rounded bg-black/20 p-2 text-center">
+                            <p className="text-[#7ee787] text-sm font-bold glow-green">{s.value}</p>
+                            <p className="text-[#6e7681] text-[9px] mt-0.5">{s.label}</p>
+                        </div>
+                    ))}
+                </div>
+
                 <p className="text-[#79c0ff] text-xs font-bold glow-blue flex items-center gap-1.5 select-none">
                     <Share2 className="w-3 h-3 stroke-[2]" />
                     CONTACTO
                 </p>
                 <div className="p-3 border border-[#7ee787]/15 rounded bg-black/20 space-y-1">
-                    <p className="text-[#6e7681] text-[11px]">
+                    <a href={profile.github} target="_blank" rel="noopener noreferrer" className="text-[#6e7681] text-[11px] hover:text-[#79c0ff] transition-colors block">
                         GitHub: <span className="text-[#79c0ff]">{profile.github}</span>
-                    </p>
-                    <p className="text-[#6e7681] text-[11px]">
+                    </a>
+                    <a href={profile.linkedin} target="_blank" rel="noopener noreferrer" className="text-[#6e7681] text-[11px] hover:text-[#79c0ff] transition-colors block">
                         LinkedIn: <span className="text-[#79c0ff]">{profile.linkedin}</span>
-                    </p>
-                    <p className="text-[#6e7681] text-[11px]">
+                    </a>
+                    <a href={profile.instagram} target="_blank" rel="noopener noreferrer" className="text-[#6e7681] text-[11px] hover:text-[#79c0ff] transition-colors block">
                         Instagram: <span className="text-[#79c0ff]">{profile.instagram}</span>
-                    </p>
-                    <p className="text-[#6e7681] text-[11px]">
+                    </a>
+                    <a href={`mailto:${profile.email}`} className="text-[#6e7681] text-[11px] hover:text-[#79c0ff] transition-colors block">
                         Email: <span className="text-[#79c0ff]">{profile.email}</span>
-                    </p>
+                    </a>
                 </div>
             </div>
         </div>

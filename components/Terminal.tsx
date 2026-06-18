@@ -9,6 +9,7 @@ import BigClock from './BigClock';
 import Equalizer from './Equalizer';
 import { ExplorerTree, NeovimEditor } from './FileTree';
 import { Terminal as LucideTerminal, Cpu, Gamepad2, FolderOpen, FileCode, Clock, Activity, User, Wrench, Briefcase, GraduationCap, FolderCode, Share2, Mail, Home } from 'lucide-react';
+import { Group, Panel, Separator } from 'react-resizable-panels';
 
 const ASCII_BANNER = `
 ╔══════════════════════════════════════════════════════════════╗
@@ -127,7 +128,7 @@ function WindowFrame({ title, children, className = '', active = false, icon }: 
         ? 'border-[#7ee787]/50 shadow-[0_0_15px_rgba(126,231,135,0.1)] hover:border-[#7ee787]/60 hover:shadow-[0_0_18px_rgba(126,231,135,0.12)] focus-within:border-[#7ee787]/70 focus-within:shadow-[0_0_20px_rgba(126,231,135,0.15)]'
         : 'border-[#7ee787]/30 shadow-[0_0_8px_rgba(126,231,135,0.04)] hover:border-[#7ee787]/45 hover:shadow-[0_0_12px_rgba(126,231,135,0.08)] focus-within:border-[#7ee787]/55 focus-within:shadow-[0_0_15px_rgba(126,231,135,0.1)]';
     return (
-        <div className={`border ${border} rounded-lg bg-black/20 flex flex-col overflow-hidden transition-all duration-300 ${className}`}>
+        <div className={`border ${border} rounded-lg bg-black/20 flex flex-col overflow-hidden transition-[border-color,box-shadow] duration-300 ${className}`}>
             <div className="border-b border-[#7ee787]/10 px-3 py-1.5 text-[10px] font-mono text-[#6e7681] flex items-center justify-between shrink-0 select-none">
                 <span className="text-[#d9a066] font-bold tracking-wider flex items-center gap-1.5">
                     {icon}
@@ -290,6 +291,8 @@ export default function Terminal() {
         }
     };
 
+    const explorerVisible = panel.type !== 'projects' && panel.type !== 'skills' && panel.type !== 'experience';
+
     const rightPanelTitle = panel.type === 'whoami'
         ? (lang === 'es' ? 'QUIEN SOY' : 'WHOAMI')
         : panel.type.toUpperCase();
@@ -308,109 +311,123 @@ export default function Terminal() {
             >
                 <StatusBar lang={lang} />
 
-                {/* Symmetrical 50/50 Grid layout */}
-                <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-2 gap-3 p-3 overflow-hidden">
+                {/* ─── Tiling layout (react-resizable-panels) ─── */}
+                <div className="flex-1 min-h-0 p-3 overflow-hidden">
+                    <Group orientation="horizontal" className="h-full">
+                        {/* ─── Left column ─── */}
+                        <Panel defaultSize={50} minSize={25}>
+                            <Group orientation="vertical" className="h-full">
+                                {/* SysInfo + Clock */}
+                                <Panel defaultSize={35} minSize={12}>
+                                    <Group orientation="horizontal" className="h-full">
+                                        <Panel defaultSize={60} minSize={25}>
+                                            <WindowFrame title="SYSINFO" icon={<DiamondIcon />} className="h-full">
+                                                <SystemFetch />
+                                            </WindowFrame>
+                                        </Panel>
+                                        <Separator className="w-[3px] cursor-col-resize bg-[#7ee787]/0 hover:bg-[#7ee787]/30 data-[resize-active]:bg-[#7ee787]/50 transition-colors rounded-sm" />
+                                        <Panel defaultSize={40} minSize={20}>
+                                            <WindowFrame title={lang === 'es' ? 'RELOJ' : 'CLOCK'} icon={<ClockTitleIcon />} className="h-full">
+                                                <BigClock />
+                                            </WindowFrame>
+                                        </Panel>
+                                    </Group>
+                                </Panel>
 
-                    {/* ─── Left column (50%) ─── */}
-                    <div className="flex flex-col gap-3 min-h-0 overflow-hidden">
-                        {/* SysInfo (60%) & Clock (40%) side-by-side (Top) */}
-                        <div className="shrink-0 grid grid-cols-1 md:grid-cols-5 gap-3" style={{ height: '35%' }}>
-                            <div className="md:col-span-3 min-h-0 overflow-hidden">
-                                <WindowFrame title="SYSINFO" icon={<DiamondIcon />} className="h-full">
-                                    <SystemFetch />
-                                </WindowFrame>
-                            </div>
-                            <div className="md:col-span-2 min-h-0 overflow-hidden">
-                                <WindowFrame title={lang === 'es' ? 'RELOJ' : 'CLOCK'} icon={<ClockTitleIcon />} className="h-full">
-                                    <BigClock />
-                                </WindowFrame>
-                            </div>
-                        </div>
+                                <Separator className="h-[3px] cursor-row-resize bg-[#7ee787]/0 hover:bg-[#7ee787]/30 data-[resize-active]:bg-[#7ee787]/50 transition-colors rounded-sm" />
 
-                        {/* Terminal (Bottom, takes remaining vertical space) */}
-                        <div className="flex-1 min-h-0">
-                            <WindowFrame title="TERMINAL" icon={<TerminalIcon />} active className="h-full">
-                                <pre className="font-mono text-[9px] sm:text-[10px] leading-tight text-[#7ee787] glow-green mb-3 select-none overflow-x-auto">
-                                    {ASCII_BANNER}
-                                </pre>
+                                {/* Terminal */}
+                                <Panel defaultSize={65} minSize={15}>
+                                    <WindowFrame title="TERMINAL" icon={<TerminalIcon />} active className="h-full">
+                                        <pre className="font-mono text-[9px] sm:text-[10px] leading-tight text-[#7ee787] glow-green mb-3 select-none overflow-x-auto">
+                                            {ASCII_BANNER}
+                                        </pre>
 
-                                <div className="h-[calc(100%-110px)] overflow-y-auto overflow-x-hidden font-mono text-sm pr-1">
-                                    {history.map((entry, i) => (
-                                        <div key={i} className="mb-1.5">
-                                            {entry.kind === 'input' ? (
-                                                <div className="flex items-start gap-2">
-                                                    <span className="text-[#7ee787] font-bold shrink-0 glow-green">anthony@portfolio</span>
-                                                    <span className="text-[#6e7681]">:~$</span>
-                                                    <span className="text-[#79c0ff] glow-blue">{entry.text}</span>
+                                        <div className="h-[calc(100%-110px)] overflow-y-auto overflow-x-hidden font-mono text-sm pr-1">
+                                            {history.map((entry, i) => (
+                                                <div key={i} className="mb-1.5">
+                                                    {entry.kind === 'input' ? (
+                                                        <div className="flex items-start gap-2">
+                                                            <span className="text-[#7ee787] font-bold shrink-0 glow-green">matrix@terminal</span>
+                                                            <span className="text-[#6e7681]">:~$</span>
+                                                            <span className="text-[#79c0ff] glow-blue">{entry.text}</span>
+                                                        </div>
+                                                    ) : (
+                                                        <Lines lines={entry.lines} />
+                                                    )}
                                                 </div>
-                                            ) : (
-                                                <Lines lines={entry.lines} />
-                                            )}
+                                            ))}
+
+                                            <div className="flex items-center gap-2 mt-1">
+                                                <span className="text-[#7ee787] font-bold shrink-0 glow-green">matrix@terminal</span>
+                                                <span className="text-[#6e7681]">:~$</span>
+                                                <input
+                                                    ref={inputRef}
+                                                    value={input}
+                                                    onChange={e => setInput(e.target.value)}
+                                                    onKeyDown={onKeyDown}
+                                                    autoFocus
+                                                    autoComplete="off"
+                                                    spellCheck={false}
+                                                    className="flex-1 bg-transparent text-[#79c0ff] outline-none caret-[#7ee787] font-mono text-sm"
+                                                />
+                                            </div>
+
+                                            <div ref={bottomRef} />
                                         </div>
-                                    ))}
-
-                                    <div className="flex items-center gap-2 mt-1">
-                                        <span className="text-[#7ee787] font-bold shrink-0 glow-green">anthony@portfolio</span>
-                                        <span className="text-[#6e7681]">:~$</span>
-                                        <input
-                                            ref={inputRef}
-                                            value={input}
-                                            onChange={e => setInput(e.target.value)}
-                                            onKeyDown={onKeyDown}
-                                            autoFocus
-                                            autoComplete="off"
-                                            spellCheck={false}
-                                            className="flex-1 bg-transparent text-[#79c0ff] outline-none caret-[#7ee787] font-mono text-sm"
-                                        />
-                                    </div>
-
-                                    <div ref={bottomRef} />
-                                </div>
-                            </WindowFrame>
-                        </div>
-                    </div>
-
-                    {/* ─── Right column (50%) ─── */}
-                    <div className="flex flex-col gap-3 min-h-0 overflow-hidden h-full">
-                        
-                        {/* Dynamic Views */}
-                        <div className={`min-h-0 ${
-                            panel.type === 'projects' || panel.type === 'skills' || panel.type === 'experience'
-                                ? 'flex-1 h-full'
-                                : panel.type === 'home'
-                                ? 'shrink-0 h-52'
-                                : 'flex-[3]'
-                        }`}>
-                            <WindowFrame title={rightPanelTitle} icon={panelIcons[panel.type]} className="h-full">
-                                <RightPanel panel={panel} onBackToGame={onBackToGame} lang={lang} />
-                            </WindowFrame>
-                        </div>
-
-                        {/* Explorer + Neovim (hidden for full-screen panels) */}
-                        {panel.type !== 'projects' && panel.type !== 'skills' && panel.type !== 'experience' && (
-                            <div className="flex-[1.6] min-h-0 grid grid-cols-1 md:grid-cols-2 gap-3">
-                                <div className="min-h-0">
-                                    <WindowFrame title={lang === 'es' ? 'EXPLORADOR' : 'EXPLORER'} icon={<FolderTitleIcon />} className="h-full">
-                                        <ExplorerTree selectedFile={selectedFile} onSelectFile={onSelectFile} />
                                     </WindowFrame>
-                                </div>
-                                <div className="min-h-0">
-                                    <WindowFrame title="NEOVIM" icon={<NeovimTitleIcon />} className="h-full">
-                                        <NeovimEditor selectedFile={selectedFile} lang={lang} />
+                                </Panel>
+                            </Group>
+                        </Panel>
+
+                        <Separator className="w-[3px] cursor-col-resize bg-[#7ee787]/0 hover:bg-[#7ee787]/30 data-[resize-active]:bg-[#7ee787]/50 transition-colors rounded-sm" />
+
+                        {/* ─── Right column ─── */}
+                        <Panel defaultSize={50} minSize={25}>
+                            <Group orientation="vertical" className="h-full">
+                                {/* Dynamic Views */}
+                                <Panel defaultSize={45} minSize={15}>
+                                    <WindowFrame title={rightPanelTitle} icon={panelIcons[panel.type]} className="h-full">
+                                        <RightPanel panel={panel} onBackToGame={onBackToGame} lang={lang} />
                                     </WindowFrame>
-                                </div>
-                            </div>
-                        )}
+                                </Panel>
 
-                        {/* Viz always visible, fixed small size */}
-                        <div className="shrink-0 h-36">
-                            <WindowFrame title="VIZ" icon={<VizTitleIcon />} className="h-full">
-                                <Equalizer />
-                            </WindowFrame>
-                        </div>
+                                {explorerVisible ? (
+                                    <>
+                                        <Separator className="h-[3px] cursor-row-resize bg-[#7ee787]/0 hover:bg-[#7ee787]/30 data-[resize-active]:bg-[#7ee787]/50 transition-colors rounded-sm" />
 
-                    </div>
+                                        {/* Explorer + Neovim */}
+                                        <Panel defaultSize={30} minSize={15}>
+                                            <Group orientation="horizontal" className="h-full">
+                                                <Panel defaultSize={50} minSize={25}>
+                                                    <WindowFrame title={lang === 'es' ? 'EXPLORADOR' : 'EXPLORER'} icon={<FolderTitleIcon />} className="h-full">
+                                                        <ExplorerTree selectedFile={selectedFile} onSelectFile={onSelectFile} />
+                                                    </WindowFrame>
+                                                </Panel>
+                                                <Separator className="w-[3px] cursor-col-resize bg-[#7ee787]/0 hover:bg-[#7ee787]/30 data-[resize-active]:bg-[#7ee787]/50 transition-colors rounded-sm" />
+                                                <Panel defaultSize={50} minSize={25}>
+                                                    <WindowFrame title="NEOVIM" icon={<NeovimTitleIcon />} className="h-full">
+                                                        <NeovimEditor selectedFile={selectedFile} lang={lang} />
+                                                    </WindowFrame>
+                                                </Panel>
+                                            </Group>
+                                        </Panel>
 
+                                        <Separator className="h-[3px] cursor-row-resize bg-[#7ee787]/0 hover:bg-[#7ee787]/30 data-[resize-active]:bg-[#7ee787]/50 transition-colors rounded-sm" />
+                                    </>
+                                ) : (
+                                    <Separator className="h-[3px] cursor-row-resize bg-[#7ee787]/0 hover:bg-[#7ee787]/30 data-[resize-active]:bg-[#7ee787]/50 transition-colors rounded-sm" />
+                                )}
+
+                                {/* Viz */}
+                                <Panel defaultSize={20} minSize={10}>
+                                    <WindowFrame title="VIZ" icon={<VizTitleIcon />} className="h-full">
+                                        <Equalizer />
+                                    </WindowFrame>
+                                </Panel>
+                            </Group>
+                        </Panel>
+                    </Group>
                 </div>
             </div>
         </>

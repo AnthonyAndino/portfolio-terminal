@@ -3,59 +3,40 @@ import { useEffect, useRef } from 'react';
 
 const CHARS = '0123456789';
 
-const BOOT_LINES = [
-    { text: 'BIOS v4.11 © 2024 Anthon Corporation', color: '#6e7681' },
-    { text: '', color: '' },
-    { text: 'POST: CPU.................... OK', color: '#7ee787' },
-    { text: 'POST: MEM.................... OK', color: '#7ee787' },
-    { text: 'POST: GPU.................... OK', color: '#7ee787' },
-    { text: 'POST: HDD.................... OK', color: '#7ee787' },
-    { text: '', color: '' },
-    { text: 'Detecting hardware...', color: '#7ee787' },
-    { text: 'Loading kernel modules...', color: '#7ee787' },
-    { text: 'Mounting filesystems...', color: '#7ee787' },
-    { text: 'Starting network services...', color: '#7ee787' },
-    { text: 'Initializing display...', color: '#7ee787' },
-    { text: '', color: '' },
-    { text: 'AnthonyOS v1.0 x86_64', color: '#79c0ff' },
-];
-
-const LINE_DELAY = 400;
-const CHARS_PER_FRAME = 4;
-
 export default function BootAnimation() {
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
     useEffect(() => {
         const canvas = canvasRef.current;
         if (!canvas) return;
-        const ctx = canvas.getContext('2d')!;
+        const ctx = canvas.getContext('2d', { alpha: false })!; // Use alpha: false for better canvas rendering performance
 
-        let drops: { x: number; y: number; speed: number; length: number }[] = [];
+        let drops: { x: number; y: number; speed: number; length: number; offset: number }[] = [];
         let animId = 0;
         let w = 0;
         let h = 0;
+        let isVisible = true;
 
-        const state = { step: 0, char: 0, frame: 0, done: false };
+        const fadeIn: { alpha: number; phase: 'fadein' | 'steady' } = { alpha: 0, phase: 'fadein' };
 
         function init() {
             const parent = canvas!.parentElement!;
             const rect = parent.getBoundingClientRect();
             w = Math.floor(rect.width);
             h = Math.floor(rect.height);
-            canvas!.width = w * 2;
-            canvas!.height = h * 2;
-            canvas!.style.width = `${w}px`;
-            canvas!.style.height = `${h}px`;
+            canvas!.width = w;
+            canvas!.height = h;
 
-            const cols = Math.floor(w / 14);
+            const spacing = 7;
+            const cols = Math.floor(w / spacing);
             drops = [];
             for (let i = 0; i < cols; i++) {
                 drops.push({
-                    x: i * 14,
-                    y: Math.random() * -h * 2,
-                    speed: 0.3 + Math.random() * 0.9,
-                    length: 3 + Math.floor(Math.random() * 5),
+                    x: i * spacing,
+                    y: Math.random() * -h * 3,
+                    speed: 1.2 + Math.random() * 2.5,
+                    length: 10 + Math.floor(Math.random() * 12),
+                    offset: Math.random() < 0.3 ? 3 : 0,
                 });
             }
         }
@@ -65,98 +46,64 @@ export default function BootAnimation() {
         init();
 
         function loop() {
-            if (!canvas || !ctx) return;
-            state.frame++;
+            if (!isVisible || !canvas || !ctx) return;
 
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            // Background
             ctx.fillStyle = '#0d1117';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            ctx.save();
-            ctx.scale(2, 2);
+            if (fadeIn.phase === 'fadein') {
+                fadeIn.alpha = Math.min(fadeIn.alpha + 0.015, 1);
+                if (fadeIn.alpha >= 1) fadeIn.phase = 'steady';
+            }
 
-            // ── Matrix Rain (subtle background) ──
-            ctx.font = '9px monospace';
+            ctx.font = '8px monospace';
             for (const drop of drops) {
                 for (let i = 0; i < drop.length; i++) {
-                    const yi = drop.y - i * 11;
+                    const yi = drop.y - i * 9 + drop.offset;
                     if (yi < 0 || yi > h) continue;
 
                     const char = CHARS[Math.floor(Math.random() * CHARS.length)];
-                    const alpha = i === 0 ? 0.15 : 0.12 - i * 0.02;
-                    ctx.fillStyle = `rgba(126, 231, 135, ${Math.max(alpha, 0.02)})`;
+                    const isHead = i === 0;
+                    const tailFade = 1 - (i / drop.length) * 0.7;
+
+                    if (isHead) {
+                        ctx.fillStyle = `rgba(168, 255, 196, ${0.95 * fadeIn.alpha})`;
+                    } else {
+                        const brightness = Math.max(0.06, 0.45 * tailFade);
+                        ctx.fillStyle = `rgba(126, 231, 135, ${brightness * fadeIn.alpha})`;
+                    }
                     ctx.fillText(char, drop.x, yi);
                 }
+
                 drop.y += drop.speed;
-                if (drop.y - drop.length * 11 > h) {
-                    drop.y = Math.random() * -40;
-                    drop.speed = 0.3 + Math.random() * 0.9;
+                if (drop.y - drop.length * 9 > h) {
+                    drop.y = Math.random() * -120;
+                    drop.speed = 1.2 + Math.random() * 2.5;
                 }
             }
-
-            // ── Boot text overlay ──
-            let ty = 10;
-
-            // Logo
-            ctx.font = '7px monospace';
-            ctx.fillStyle = '#7ee787';
-            const LOGO = [
-                '  █████╗ ███╗   ██╗████████╗██╗  ██╗ ██████╗ ███╗   ██╗██╗   ██╗',
-                ' ██╔══██╗████╗  ██║╚══██╔══╝██║  ██║██╔═══██╗████╗  ██║╚██╗ ██╔╝',
-                ' ███████║██╔██╗ ██║   ██║   ███████║██║   ██║██╔██╗ ██║ ╚████╔╝ ',
-                ' ██╔══██║██║╚██╗██║   ██║   ██╔══██║██║   ██║██║╚██╗██║  ╚██╔╝  ',
-                ' ██║  ██║██║ ╚████║   ██║   ██║  ██║╚██████╔╝██║ ╚████║   ██║   ',
-                ' ╚═╝  ╚═╝╚═╝  ╚═══╝   ╚═╝   ╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═══╝   ╚═╝   ',
-            ];
-            for (const line of LOGO) {
-                ctx.fillText(line, 4, ty);
-                ty += 7;
-            }
-
-            ty += 4;
-
-            // Boot lines
-            if (state.step < BOOT_LINES.length && !state.done) {
-                const line = BOOT_LINES[state.step];
-                if (line.text) {
-                    ctx.font = '9px monospace';
-                    ctx.fillStyle = line.color || '#6e7681';
-                    const maxChars = Math.min(state.char, line.text.length);
-                    ctx.fillText(line.text.slice(0, maxChars), 10, ty);
-
-                    if (maxChars < line.text.length) {
-                        state.char += CHARS_PER_FRAME;
-                    } else if (state.frame % Math.ceil(LINE_DELAY / 16) === 0) {
-                        state.step++;
-                        state.char = 0;
-                    }
-                    ty += 12;
-                } else {
-                    if (state.frame % Math.ceil(LINE_DELAY / 16) === 0) {
-                        state.step++;
-                        state.char = 0;
-                    }
-                    ty += 6;
-                }
-            } else if (!state.done) {
-                state.done = true;
-                ty += 8;
-                ctx.font = 'bold 9px monospace';
-                ctx.fillStyle = '#7ee787';
-                ctx.fillText('AnthonyOS ready. Type help.', 10, ty);
-            }
-
-            ctx.restore();
             animId = requestAnimationFrame(loop);
         }
 
+        // Setup Intersection Observer to pause/play animation loop based on visibility
+        const observer = new IntersectionObserver((entries) => {
+            const entry = entries[0];
+            const wasVisible = isVisible;
+            isVisible = entry.isIntersecting;
+            
+            if (isVisible && !wasVisible) {
+                // Restart the loop if it was paused
+                cancelAnimationFrame(animId);
+                animId = requestAnimationFrame(loop);
+            }
+        }, { threshold: 0.05 });
+
+        observer.observe(canvas);
         animId = requestAnimationFrame(loop);
 
         return () => {
             cancelAnimationFrame(animId);
             ro.disconnect();
+            observer.disconnect();
         };
     }, []);
 
@@ -164,3 +111,4 @@ export default function BootAnimation() {
         <canvas ref={canvasRef} className="w-full h-full" style={{ imageRendering: 'pixelated' }} />
     );
 }
+

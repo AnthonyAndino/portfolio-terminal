@@ -1,39 +1,37 @@
 'use client';
 import { useEffect, useRef } from 'react';
 
-const BAR_COUNT = 32;
+const BAR_COUNT = 24;
+const INTERVAL = 200; // Throttle height updates to every 200ms for performance
 
 function randomHeights(): number[] {
-    return Array.from({ length: BAR_COUNT }, () => 0.1 + Math.random() * 0.8);
+    return Array.from({ length: BAR_COUNT }, () => 0.15 + Math.random() * 0.75);
 }
 
 export default function Equalizer() {
     const barsRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        let id: number;
         const el = barsRef.current;
         if (!el) return;
         const children = Array.from(el.children) as HTMLDivElement[];
 
-        let lastTime = 0;
-        const interval = 120; // Update every 120ms instead of every frame
+        let lastUpdate = 0;
+        let animId = 0;
 
-        function tick(timestamp: number) {
-            if (!lastTime) lastTime = timestamp;
-            const elapsed = timestamp - lastTime;
-
-            if (elapsed >= interval) {
+        function loop(timestamp: number) {
+            if (timestamp - lastUpdate >= INTERVAL) {
                 const heights = randomHeights();
-                children.forEach((child, i) => {
-                    child.style.height = `${heights[i] * 100}%`;
-                });
-                lastTime = timestamp;
+                for (let i = 0; i < children.length; i++) {
+                    children[i].style.height = `${heights[i] * 100}%`;
+                }
+                lastUpdate = timestamp;
             }
-            id = requestAnimationFrame(tick);
+            animId = requestAnimationFrame(loop);
         }
-        id = requestAnimationFrame(tick);
-        return () => cancelAnimationFrame(id);
+
+        animId = requestAnimationFrame(loop);
+        return () => cancelAnimationFrame(animId);
     }, []);
 
     return (
@@ -55,3 +53,4 @@ export default function Equalizer() {
         </div>
     );
 }
+

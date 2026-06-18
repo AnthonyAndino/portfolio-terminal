@@ -50,7 +50,7 @@ export default function SystemFetch() {
                     {DELTA_LOGO.join('\n')}
                 </pre>
                 <div className="min-w-0 space-y-1.5 pt-0.5">
-                    <p className="text-[#79c0ff] font-bold text-sm glow-blue">&gt;_ anthony@portfolio</p>
+                    <p className="text-[#79c0ff] font-bold text-sm glow-blue">&gt;_ matrix@terminal</p>
                     <div className="space-y-1">
                         {SYS_INFO.map(item => (
                             <p key={item.label} className="flex gap-2 text-sm">

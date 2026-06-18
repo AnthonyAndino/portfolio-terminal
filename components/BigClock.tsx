@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, memo } from 'react';
 
 function useTime() {
     const [time, setTime] = useState('22:04');
@@ -13,7 +13,7 @@ function useTime() {
             );
         }
         tick();
-        const id = setInterval(tick, 1000);
+        const id = setInterval(tick, 10000); // Check time every 10 seconds instead of every second
         return () => clearInterval(id);
     }, []);
     return time;
@@ -111,7 +111,7 @@ const COLON = [
     '   '
 ];
 
-function DigitBlock({ d }: { d: string }) {
+const DigitBlock = memo(function DigitBlock({ d }: { d: string }) {
     const rows = DIGITS[d] || DIGITS['0'];
     return (
         <div className="flex flex-col items-center leading-[1.0]">
@@ -122,9 +122,9 @@ function DigitBlock({ d }: { d: string }) {
             ))}
         </div>
     );
-}
+});
 
-function ColonBlock() {
+const ColonBlock = memo(function ColonBlock() {
     return (
         <div className="flex flex-col items-center leading-[1.0] blink-colon mx-0.5">
             {COLON.map((row, i) => (
@@ -134,7 +134,7 @@ function ColonBlock() {
             ))}
         </div>
     );
-}
+});
 
 export default function BigClock() {
     const time = useTime();
@@ -164,3 +164,4 @@ export default function BigClock() {
         </div>
     );
 }
+

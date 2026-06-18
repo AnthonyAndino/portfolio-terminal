@@ -12,13 +12,13 @@ const SYS_INFO = [
 ];
 
 const DELTA_LOGO = [
-    '         ▄        ',
-    '        ███       ',
-    '       █████      ',
-    '      ███ ▀███    ',
-    '     ███   ▀███   ',
+    '         ██       ',
+    '        ████      ',
+    '       ██████     ',
+    '      ███  ███    ',
+    '     ███    ███   ',
     '    ████████████  ',
-    '   ███▀       ▀███',
+    '   ███▀      ▀███ ',
 ];
 
 export function PixelGearIcon({ className = "text-[#7ee787]" }: { className?: string }) {

@@ -1,5 +1,7 @@
 'use client';
 import { useState, useRef, useEffect, useCallback } from 'react';
+import type { RefObject } from 'react';
+import type { GroupImperativeHandle } from 'react-resizable-panels';
 import { runCommand, OutputLine } from '@/lib/commands';
 import type { PanelContent } from '@/lib/commands';
 import RightPanel from './RightPanel';
@@ -9,7 +11,7 @@ import BigClock from './BigClock';
 import Equalizer from './Equalizer';
 import { ExplorerTree, NeovimEditor } from './FileTree';
 import { Terminal as LucideTerminal, Cpu, Gamepad2, FolderOpen, FileCode, Clock, Activity, User, Wrench, Briefcase, GraduationCap, FolderCode, Share2, Mail, Home } from 'lucide-react';
-import { Group, Panel, Separator } from 'react-resizable-panels';
+import { Group, Panel, Separator, useGroupRef } from 'react-resizable-panels';
 
 const ASCII_BANNER = `
 ╔══════════════════════════════════════════════════════════════╗
@@ -157,6 +159,45 @@ export default function Terminal() {
     const [panel, setPanel] = useState<PanelContent>({ type: 'home' });
     const inputRef = useRef<HTMLInputElement>(null);
     const bottomRef = useRef<HTMLDivElement>(null);
+
+    const mainGroupRef = useGroupRef();
+    const leftVerticalRef = useGroupRef();
+    const sysinfoClockRef = useGroupRef();
+    const rightVerticalRef = useGroupRef();
+    const explorerNeovimRef = useGroupRef();
+    const initialLayouts = useRef<Record<string, { [panelId: string]: number }>>({});
+
+    const resetLayout = useCallback(() => {
+        const groups: [RefObject<GroupImperativeHandle | null>, string][] = [
+            [mainGroupRef, 'main'],
+            [leftVerticalRef, 'leftVertical'],
+            [sysinfoClockRef, 'sysinfoClock'],
+            [rightVerticalRef, 'rightVertical'],
+            [explorerNeovimRef, 'explorerNeovim'],
+        ];
+        for (const [ref, key] of groups) {
+            const layout = initialLayouts.current[key];
+            if (layout) ref.current?.setLayout(layout);
+        }
+    }, [mainGroupRef, leftVerticalRef, sysinfoClockRef, rightVerticalRef, explorerNeovimRef]);
+
+    useEffect(() => {
+        const groups: [RefObject<GroupImperativeHandle | null>, string][] = [
+            [mainGroupRef, 'main'],
+            [leftVerticalRef, 'leftVertical'],
+            [sysinfoClockRef, 'sysinfoClock'],
+            [rightVerticalRef, 'rightVertical'],
+            [explorerNeovimRef, 'explorerNeovim'],
+        ];
+        let allReady = true;
+        for (const [ref, key] of groups) {
+            if (!ref.current) { allReady = false; break; }
+        }
+        if (!allReady) return;
+        for (const [ref, key] of groups) {
+            initialLayouts.current[key] = ref.current!.getLayout();
+        }
+    }, [mainGroupRef, leftVerticalRef, sysinfoClockRef, rightVerticalRef, explorerNeovimRef]);
 
     useEffect(() => {
         setHistory([{ kind: 'output', lines: lang === 'es' ? WELCOME_ES : WELCOME_EN }]);
@@ -337,24 +378,24 @@ export default function Terminal() {
                     }
                 }}
             >
-                <StatusBar lang={lang} />
+                <StatusBar lang={lang} onResetLayout={resetLayout} />
 
                 {/* ─── Tiling layout (react-resizable-panels) ─── */}
                 <div className="flex-1 min-h-0 p-3 overflow-hidden">
-                    <Group orientation="horizontal" className="h-full">
+                    <Group orientation="horizontal" className="h-full" groupRef={mainGroupRef}>
                         {/* ─── Left column ─── */}
-                        <Panel defaultSize={50} minSize={25}>
-                            <Group orientation="vertical" className="h-full">
+                        <Panel defaultSize={50} minSize={25} id="left-col">
+                            <Group orientation="vertical" className="h-full" groupRef={leftVerticalRef}>
                                 {/* SysInfo + Clock */}
-                                <Panel defaultSize={35} minSize={12}>
-                                    <Group orientation="horizontal" className="h-full">
-                                        <Panel defaultSize={60} minSize={25}>
+                                <Panel defaultSize={35} minSize={12} id="sysinfo-clock">
+                                    <Group orientation="horizontal" className="h-full" groupRef={sysinfoClockRef}>
+                                        <Panel defaultSize={60} minSize={25} id="sysinfo">
                                             <WindowFrame title="SYSINFO" icon={<DiamondIcon />} className="h-full">
                                                 <SystemFetch />
                                             </WindowFrame>
                                         </Panel>
                                         <Separator className="w-[3px] cursor-col-resize bg-[#7ee787]/0 hover:bg-[#7ee787]/30 data-[resize-active]:bg-[#7ee787]/50 transition-colors rounded-sm" />
-                                        <Panel defaultSize={40} minSize={20}>
+                                        <Panel defaultSize={40} minSize={20} id="clock">
                                             <WindowFrame title={lang === 'es' ? 'RELOJ' : 'CLOCK'} icon={<ClockTitleIcon />} className="h-full">
                                                 <BigClock />
                                             </WindowFrame>
@@ -365,7 +406,7 @@ export default function Terminal() {
                                 <Separator className="h-[3px] cursor-row-resize bg-[#7ee787]/0 hover:bg-[#7ee787]/30 data-[resize-active]:bg-[#7ee787]/50 transition-colors rounded-sm" />
 
                                 {/* Terminal */}
-                                <Panel defaultSize={65} minSize={15}>
+                                <Panel defaultSize={65} minSize={15} id="terminal">
                                     <WindowFrame title="TERMINAL" icon={<TerminalIcon />} active className="h-full">
                                         <pre className="font-mono text-[9px] sm:text-[10px] leading-tight text-[#7ee787] glow-green mb-3 select-none overflow-x-auto">
                                             {ASCII_BANNER}
@@ -411,10 +452,10 @@ export default function Terminal() {
                         <Separator className="w-[3px] cursor-col-resize bg-[#7ee787]/0 hover:bg-[#7ee787]/30 data-[resize-active]:bg-[#7ee787]/50 transition-colors rounded-sm" />
 
                         {/* ─── Right column ─── */}
-                        <Panel defaultSize={50} minSize={25}>
-                            <Group orientation="vertical" className="h-full">
+                        <Panel defaultSize={50} minSize={25} id="right-col">
+                            <Group orientation="vertical" className="h-full" groupRef={rightVerticalRef}>
                                 {/* Dynamic Views */}
-                                <Panel defaultSize={45} minSize={15}>
+                                <Panel defaultSize={45} minSize={15} id="views">
                                     <WindowFrame title={rightPanelTitle} icon={panelIcons[panel.type]} className="h-full">
                                         <RightPanel panel={panel} onBackToGame={onBackToGame} lang={lang} />
                                     </WindowFrame>
@@ -425,15 +466,15 @@ export default function Terminal() {
                                         <Separator className="h-[3px] cursor-row-resize bg-[#7ee787]/0 hover:bg-[#7ee787]/30 data-[resize-active]:bg-[#7ee787]/50 transition-colors rounded-sm" />
 
                                         {/* Explorer + Neovim */}
-                                        <Panel defaultSize={30} minSize={15}>
-                                            <Group orientation="horizontal" className="h-full">
-                                                <Panel defaultSize={50} minSize={25}>
+                                        <Panel defaultSize={30} minSize={15} id="explorer-neovim">
+                                            <Group orientation="horizontal" className="h-full" groupRef={explorerNeovimRef}>
+                                                <Panel defaultSize={50} minSize={25} id="explorer">
                                                     <WindowFrame title={lang === 'es' ? 'EXPLORADOR' : 'EXPLORER'} icon={<FolderTitleIcon />} className="h-full">
                                                         <ExplorerTree selectedFile={selectedFile} onSelectFile={onSelectFile} />
                                                     </WindowFrame>
                                                 </Panel>
                                                 <Separator className="w-[3px] cursor-col-resize bg-[#7ee787]/0 hover:bg-[#7ee787]/30 data-[resize-active]:bg-[#7ee787]/50 transition-colors rounded-sm" />
-                                                <Panel defaultSize={50} minSize={25}>
+                                                <Panel defaultSize={50} minSize={25} id="neovim">
                                                     <WindowFrame title="NEOVIM" icon={<NeovimTitleIcon />} className="h-full">
                                                         <NeovimEditor selectedFile={selectedFile} lang={lang} />
                                                     </WindowFrame>
@@ -448,7 +489,7 @@ export default function Terminal() {
                                 )}
 
                                 {/* Viz */}
-                                <Panel defaultSize={20} minSize={10}>
+                                <Panel defaultSize={20} minSize={10} id="viz">
                                     <WindowFrame title="VIZ" icon={<VizTitleIcon />} className="h-full">
                                         <Equalizer />
                                     </WindowFrame>

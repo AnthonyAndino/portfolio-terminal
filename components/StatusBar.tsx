@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
+import { RotateCw } from 'lucide-react';
 
 interface StatsState {
     workspace: number;
@@ -9,7 +10,7 @@ interface StatsState {
     netTx: number;
 }
 
-export default function StatusBar({ lang = 'es' }: { lang?: 'es' | 'en' }) {
+export default function StatusBar({ lang = 'es', onResetLayout }: { lang?: 'es' | 'en'; onResetLayout?: () => void }) {
     const [time, setTime] = useState('');
     const [date, setDate] = useState('');
     const [stats, setStats] = useState<StatsState>({
@@ -80,6 +81,15 @@ export default function StatusBar({ lang = 'es' }: { lang?: 'es' | 'en' }) {
                         ↓{stats.netRx} ↑{stats.netTx}
                     </span>
                 </span>
+                <span className="text-[#6e7681]">|</span>
+                <button
+                    onClick={onResetLayout}
+                    className="text-[#d9a066] font-bold hover:text-[#7ee787] transition-colors inline-flex items-center gap-1"
+                    title={lang === 'es' ? 'Restaurar diseño original de ventanas' : 'Reset window layout'}
+                >
+                    <RotateCw className="w-3 h-3 stroke-[2]" />
+                    {lang === 'es' ? 'Restaurar' : 'Reset'}
+                </button>
             </div>
             <div className="flex items-center gap-3">
                 <span className="text-[#6e7681]">{date}</span>

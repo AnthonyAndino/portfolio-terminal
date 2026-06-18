@@ -4,6 +4,7 @@ import './globals.css';
 export const metadata: Metadata = {
     title: 'Anthony Andino - Software and Web Developer',
     description: 'Portfolio interactivo de Anthony Andino.',
+    icons: { icon: '/favicon.svg' },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

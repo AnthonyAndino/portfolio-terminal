@@ -179,9 +179,11 @@ export default function Terminal() {
 
         // CV download interceptor
         if (cmd === 'cv' || cmd === 'resume' || cmd === 'curriculum') {
+            const isEn = lang === 'en';
+            const filename = isEn ? 'CV_Anthony_Andino_en.pdf' : 'CV_Anthony_Andino_es.pdf';
             const a = document.createElement('a');
-            a.href = '/CV_Anthony_Andino.pdf';
-            a.download = 'CV_Anthony_Andino.pdf';
+            a.href = `/cv/${filename}`;
+            a.download = filename;
             a.style.display = 'none';
             document.body.appendChild(a);
             a.click();
@@ -191,12 +193,12 @@ export default function Terminal() {
                 { kind: 'input', text: trimmed },
                 {
                     kind: 'output',
-                    lines: lang === 'es' ? [
-                        { text: 'Descargando CV...', color: 'green' },
-                        { text: 'CV_Anthony_Andino.pdf', color: 'blue' },
-                    ] : [
+                    lines: isEn ? [
                         { text: 'Downloading CV...', color: 'green' },
-                        { text: 'CV_Anthony_Andino.pdf', color: 'blue' },
+                        { text: filename, color: 'blue' },
+                    ] : [
+                        { text: 'Descargando CV...', color: 'green' },
+                        { text: filename, color: 'blue' },
                     ],
                 }
             ]);

@@ -177,6 +177,32 @@ export default function Terminal() {
         setCmdHistory(prev => [trimmed, ...prev.slice(0, 49)]);
         setHistIdx(-1);
 
+        // CV download interceptor
+        if (cmd === 'cv' || cmd === 'resume' || cmd === 'curriculum') {
+            const a = document.createElement('a');
+            a.href = '/CV_Anthony_Andino.pdf';
+            a.download = 'CV_Anthony_Andino.pdf';
+            a.style.display = 'none';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            setHistory(prev => [
+                ...prev,
+                { kind: 'input', text: trimmed },
+                {
+                    kind: 'output',
+                    lines: lang === 'es' ? [
+                        { text: 'Descargando CV...', color: 'green' },
+                        { text: 'CV_Anthony_Andino.pdf', color: 'blue' },
+                    ] : [
+                        { text: 'Downloading CV...', color: 'green' },
+                        { text: 'CV_Anthony_Andino.pdf', color: 'blue' },
+                    ],
+                }
+            ]);
+            return;
+        }
+
         // Language toggle interceptor
         if (cmd === 'idioma' || cmd === 'lang') {
             const targetLang = parts[1];

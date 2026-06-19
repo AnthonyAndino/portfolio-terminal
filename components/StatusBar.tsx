@@ -63,8 +63,8 @@ export default function StatusBar({ lang = 'es', onResetLayout }: { lang?: 'es' 
     }, []);
 
     return (
-        <div className="flex items-center justify-between px-4 py-1.5 bg-black/40 border-b border-[#7ee787]/10 text-[11px] font-mono select-none">
-            <div className="flex items-center gap-4">
+        <div className="flex items-center justify-between px-2 lg:px-4 py-1 bg-black/40 border-b border-[#7ee787]/10 text-[clamp(9px,0.55vw,11px)] font-mono select-none">
+            <div className="flex items-center gap-2 lg:gap-4">
                 <span className="text-[#d9a066] font-bold">[Workspace: {stats.workspace}]</span>
                 <span className="text-[#6e7681]">|</span>
                 <span className="text-[#6e7681]">
@@ -91,7 +91,7 @@ export default function StatusBar({ lang = 'es', onResetLayout }: { lang?: 'es' 
                     {lang === 'es' ? 'Restaurar' : 'Reset'}
                 </button>
             </div>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-1.5 lg:gap-3">
                 <span className="text-[#6e7681]">{date}</span>
                 <span className="text-[#7ee787] glow-green font-bold">{time}</span>
             </div>

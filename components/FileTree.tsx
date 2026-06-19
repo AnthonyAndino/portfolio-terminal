@@ -138,7 +138,7 @@ interface ExplorerTreeProps {
 
 export function ExplorerTree({ selectedFile, onSelectFile }: ExplorerTreeProps) {
     return (
-        <div className="font-mono text-[11px] leading-relaxed select-none h-full flex flex-col">
+        <div className="font-mono text-[clamp(9px,0.55vw,11px)] leading-relaxed select-none h-full flex flex-col">
             <div className="space-y-1 overflow-y-auto flex-1">
                 {FILES.map(f => {
                     const isSelected = f.name === selectedFile;
@@ -181,7 +181,7 @@ export function NeovimEditor({ selectedFile, lang }: NeovimEditorProps) {
         : FILE_CONTENTS[selectedFile]?.[lang] || ['-- No file open'];
 
     return (
-        <div className="font-mono text-[11px] leading-relaxed select-none h-full overflow-y-auto overflow-x-hidden flex flex-col justify-between">
+        <div className="font-mono text-[clamp(9px,0.55vw,11px)] leading-relaxed select-none h-full overflow-y-auto overflow-x-hidden flex flex-col justify-between">
             <pre className="text-[#7ee787] leading-snug whitespace-pre-wrap break-words">
                 {content.map((line, i) => (
                     <div key={i} className="flex hover:bg-white/5 py-0.5 whitespace-pre-wrap break-words">
@@ -190,7 +190,7 @@ export function NeovimEditor({ selectedFile, lang }: NeovimEditorProps) {
                     </div>
                 ))}
             </pre>
-            <div className="border-t border-[#7ee787]/20 bg-[#7ee787]/5 px-2 py-0.5 mt-2 flex justify-between text-[9px] text-[#6e7681]">
+            <div className="border-t border-[#7ee787]/20 bg-[#7ee787]/5 px-2 py-0.5 mt-2 flex justify-between text-[clamp(7px,0.45vw,9px)] text-[#6e7681]">
                 <span>{selectedFile || 'about.md'}</span>
                 <span>NORMAL</span>
             </div>

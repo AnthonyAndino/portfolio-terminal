@@ -160,7 +160,7 @@ export default function BigClock() {
                 <DigitBlock d={m1} />
                 <DigitBlock d={m2} />
             </div>
-            <p className="text-[#6e7681] text-[8px] font-mono mt-1 uppercase tracking-wider">{date}</p>
+            <p className="text-[#6e7681] text-[clamp(6px,0.4vw,8px)] font-mono mt-1 uppercase tracking-wider">{date}</p>
         </div>
     );
 }

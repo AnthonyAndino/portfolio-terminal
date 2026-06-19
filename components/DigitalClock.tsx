@@ -6,7 +6,7 @@ export default function DigitalClock() {
 
     return (
         <div className="bg-black/30 border border-[#7ee787]/10 rounded p-2.5 font-mono select-none">
-            <p className="text-[#d9a066] text-[10px] font-bold mb-1 tracking-wider">⏰ CLOCK</p>
+            <p className="text-[#d9a066] text-[clamp(8px,0.5vw,10px)] font-bold mb-1 tracking-wider">⏰ CLOCK</p>
             <div className="flex items-center justify-center gap-1">
                 <DigitBlock d={h1} />
                 <DigitBlock d={h2} />
@@ -34,7 +34,7 @@ const SEGMENTS: Record<string, string> = {
 function DigitBlock({ d }: { d: string }) {
     const art = SEGMENTS[d] || SEGMENTS['0'];
     return (
-        <pre className="text-[#d9a066] text-[9px] leading-[1.1] font-bold">{art}</pre>
+        <pre className="text-[#d9a066] text-[clamp(7px,0.45vw,9px)] leading-[1.1] font-bold">{art}</pre>
     );
 }
 

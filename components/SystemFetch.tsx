@@ -46,7 +46,7 @@ export default function SystemFetch() {
     return (
         <div className="font-mono select-none h-full flex items-center px-4 py-3">
             <div className="flex gap-5 items-start">
-                <pre className="text-[#7ee787] text-[13px] leading-[1.15] font-bold glow-green shrink-0">
+                <pre className="text-[#7ee787] text-[clamp(11px,0.65vw,13px)] leading-[1.15] font-bold glow-green shrink-0">
                     {DELTA_LOGO.join('\n')}
                 </pre>
                 <div className="min-w-0 space-y-1.5 pt-0.5">

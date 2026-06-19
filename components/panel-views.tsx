@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from 'react';
 import { profile, skills, experience, education, services } from '@/data/profile';
 import { projects } from '@/data/projects';
 import { TechIcon } from '@/components/tech-icons';
-import { User, Wrench, Briefcase, GraduationCap, Cpu, FolderCode, Share2, Mail, Terminal } from 'lucide-react';
+import { User, Wrench, Briefcase, GraduationCap, Cpu, FolderCode, Share2, Mail, Terminal, GitFork, UserCheck, Camera } from 'lucide-react';
 import emailjs from '@emailjs/browser';
 
 interface ViewProps {
@@ -70,29 +70,12 @@ export function WhoamiView({ onBack, lang }: ViewProps) {
                     {stats.map((s, i) => (
                         <div key={i} className="border border-[#7ee787]/15 rounded bg-black/20 p-2 text-center">
                             <p className="text-[#7ee787] text-sm font-bold glow-green">{s.value}</p>
-                            <p className="text-[#6e7681] text-[9px] mt-0.5">{s.label}</p>
+                            <p className="text-[#6e7681] text-[clamp(7px,0.45vw,9px)] mt-0.5">{s.label}</p>
                         </div>
                     ))}
                 </div>
 
-                <p className="text-[#79c0ff] text-xs font-bold glow-blue flex items-center gap-1.5 select-none">
-                    <Share2 className="w-3 h-3 stroke-[2]" />
-                    CONTACTO
-                </p>
-                <div className="p-3 border border-[#7ee787]/15 rounded bg-black/20 space-y-1">
-                    <a href={profile.github} target="_blank" rel="noopener noreferrer" className="text-[#6e7681] text-[11px] hover:text-[#79c0ff] transition-colors block">
-                        GitHub: <span className="text-[#79c0ff]">{profile.github}</span>
-                    </a>
-                    <a href={profile.linkedin} target="_blank" rel="noopener noreferrer" className="text-[#6e7681] text-[11px] hover:text-[#79c0ff] transition-colors block">
-                        LinkedIn: <span className="text-[#79c0ff]">{profile.linkedin}</span>
-                    </a>
-                    <a href={profile.instagram} target="_blank" rel="noopener noreferrer" className="text-[#6e7681] text-[11px] hover:text-[#79c0ff] transition-colors block">
-                        Instagram: <span className="text-[#79c0ff]">{profile.instagram}</span>
-                    </a>
-                    <a href={`mailto:${profile.email}`} className="text-[#6e7681] text-[11px] hover:text-[#79c0ff] transition-colors block">
-                        Email: <span className="text-[#79c0ff]">{profile.email}</span>
-                    </a>
-                </div>
+
             </div>
         </div>
     );
@@ -120,7 +103,7 @@ export function SkillsView({ onBack, lang }: ViewProps) {
                                 className="h-full bg-[#7ee787]/30 rounded transition-all duration-500"
                                 style={{ width: `${bar.pct}%` }}
                             />
-                            <span className="absolute inset-0 flex items-center px-2 text-[10px] text-[#7ee787]/70">
+                            <span className="absolute inset-0 flex items-center px-2 text-[clamp(8px,0.5vw,10px)] text-[#7ee787]/70">
                                 {bar.pct}%
                             </span>
                         </div>
@@ -128,7 +111,7 @@ export function SkillsView({ onBack, lang }: ViewProps) {
                             {bar.items.map(item => (
                                 <span
                                     key={item}
-                                    className="inline-flex items-center gap-1.5 text-[10px] text-[#7ee787] bg-[#7ee787]/[0.06] border border-[#7ee787]/15 px-1.5 py-1 rounded-sm"
+                                    className="inline-flex items-center gap-1.5 text-[clamp(8px,0.5vw,10px)] text-[#7ee787] bg-[#7ee787]/[0.06] border border-[#7ee787]/15 px-1.5 py-1 rounded-sm"
                                 >
                                     <TechIcon name={item} size={16} color="#7ee787" />
                                     {item}
@@ -156,11 +139,11 @@ export function ExperienceView({ onBack, lang }: ViewProps) {
                         </div>
                         <div className="flex-1">
                             <p className="text-[#7ee787] text-xs font-bold glow-green">{exp.title[lang]}</p>
-                            <p className="text-[#d9a066] text-[11px] mt-0.5">{exp.period}</p>
-                            <p className="text-[#7ee787] text-[11px] mt-1.5 leading-relaxed">{exp.description[lang]}</p>
+                            <p className="text-[#d9a066] text-[clamp(9px,0.55vw,11px)] mt-0.5">{exp.period}</p>
+                            <p className="text-[#7ee787] text-[clamp(9px,0.55vw,11px)] mt-1.5 leading-relaxed">{exp.description[lang]}</p>
                             <ul className="mt-2 space-y-1">
                                 {exp.highlights[lang].map((h, j) => (
-                                    <li key={j} className="text-[#6e7681] text-[11px] flex gap-2">
+                                    <li key={j} className="text-[#6e7681] text-[clamp(9px,0.55vw,11px)] flex gap-2">
                                         <span className="text-[#7ee787] shrink-0">▸</span>
                                         {h}
                                     </li>
@@ -168,7 +151,7 @@ export function ExperienceView({ onBack, lang }: ViewProps) {
                             </ul>
                             <div className="flex flex-wrap gap-1 mt-2">
                                 {exp.tech.map(t => (
-                                    <span key={t} className="text-[10px] text-[#79c0ff] bg-[#79c0ff]/10 px-1.5 py-0.5 rounded">
+                                    <span key={t} className="text-[clamp(8px,0.5vw,10px)] text-[#79c0ff] bg-[#79c0ff]/10 px-1.5 py-0.5 rounded">
                                         {t}
                                     </span>
                                 ))}
@@ -196,10 +179,10 @@ export function EducationView({ onBack, lang }: ViewProps) {
                         <div className="flex-1">
                             <p className="text-[#7ee787] text-xs font-bold glow-green">{edu.degree[lang]}</p>
                             {edu.institution && (
-                                <p className="text-[#79c0ff] text-[11px] mt-0.5">{edu.institution}</p>
+                                <p className="text-[#79c0ff] text-[clamp(9px,0.55vw,11px)] mt-0.5">{edu.institution}</p>
                             )}
-                            <p className="text-[#d9a066] text-[11px] mt-0.5">{edu.period}</p>
-                            <p className="text-[#7ee787] text-[11px] mt-1 leading-relaxed">{edu.details[lang]}</p>
+                            <p className="text-[#d9a066] text-[clamp(9px,0.55vw,11px)] mt-0.5">{edu.period}</p>
+                            <p className="text-[#7ee787] text-[clamp(9px,0.55vw,11px)] mt-1 leading-relaxed">{edu.details[lang]}</p>
                         </div>
                     </div>
                 ))}
@@ -220,7 +203,7 @@ export function ServicesView({ onBack, lang }: ViewProps) {
                             <TechIcon name={s.title.en} size={18} color="#79c0ff" />
                             {s.title[lang]}
                         </p>
-                        <p className="text-[#7ee787] text-[11px] mt-1.5 leading-relaxed">{s.description[lang]}</p>
+                        <p className="text-[#7ee787] text-[clamp(9px,0.55vw,11px)] mt-1.5 leading-relaxed">{s.description[lang]}</p>
                     </div>
                 ))}
             </div>
@@ -245,10 +228,10 @@ export function ProjectsView({ onBack, lang }: ViewProps) {
                             className="w-full text-left p-3 border border-[#7ee787]/15 rounded bg-black/20 hover:border-[#7ee787]/40 transition-all cursor-pointer"
                         >
                             <p className="text-[#7ee787] text-xs font-bold glow-green">{proj.name}</p>
-                            <p className="text-[#7ee787] text-[11px] mt-1 leading-relaxed line-clamp-2">{proj.description[lang]}</p>
+                            <p className="text-[#7ee787] text-[clamp(9px,0.55vw,11px)] mt-1 leading-relaxed line-clamp-2">{proj.description[lang]}</p>
                             <div className="flex flex-wrap gap-1.5 mt-2">
                                 {proj.tech.map(t => (
-                                    <span key={t} className="text-[10px] text-[#79c0ff] bg-[#79c0ff]/10 px-1.5 py-0.5 rounded">
+                                    <span key={t} className="text-[clamp(8px,0.5vw,10px)] text-[#79c0ff] bg-[#79c0ff]/10 px-1.5 py-0.5 rounded">
                                         {t}
                                     </span>
                                 ))}
@@ -261,7 +244,7 @@ export function ProjectsView({ onBack, lang }: ViewProps) {
                             <p className="text-[#7ee787] text-xs font-bold glow-green">{p.name}</p>
                             <button
                                 onClick={() => setSelected(null)}
-                                className="text-[#6e7681] text-[10px] hover:text-[#7ee787] transition-colors"
+                                className="text-[#6e7681] text-[clamp(8px,0.5vw,10px)] hover:text-[#7ee787] transition-colors"
                             >
                                 ✕
                             </button>
@@ -280,12 +263,12 @@ export function ProjectsView({ onBack, lang }: ViewProps) {
                         <p className="text-[#7ee787] text-xs leading-relaxed">{p.description[lang]}</p>
 
                         <div>
-                            <p className="text-[#79c0ff] text-[11px] font-bold mb-1">
+                            <p className="text-[#79c0ff] text-[clamp(9px,0.55vw,11px)] font-bold mb-1">
                                 {lang === 'es' ? 'Stack' : 'Stack'}
                             </p>
                             <div className="flex flex-wrap gap-1.5">
                                 {p.tech.map(t => (
-                                    <span key={t} className="text-[10px] text-[#7ee787] bg-[#7ee787]/10 px-1.5 py-0.5 rounded">
+                                    <span key={t} className="text-[clamp(8px,0.5vw,10px)] text-[#7ee787] bg-[#7ee787]/10 px-1.5 py-0.5 rounded">
                                         {t}
                                     </span>
                                 ))}
@@ -293,12 +276,12 @@ export function ProjectsView({ onBack, lang }: ViewProps) {
                         </div>
 
                         <div>
-                            <p className="text-[#d9a066] text-[11px] font-bold mb-1">
+                            <p className="text-[#d9a066] text-[clamp(9px,0.55vw,11px)] font-bold mb-1">
                                 {lang === 'es' ? 'Destacados' : 'Highlights'}
                             </p>
                             <ul className="space-y-1">
                                 {p.highlights[lang].map((h, i) => (
-                                    <li key={i} className="text-[#7ee787] text-[11px] flex gap-2">
+                                    <li key={i} className="text-[#7ee787] text-[clamp(9px,0.55vw,11px)] flex gap-2">
                                         <span className="text-[#7ee787] shrink-0">✓</span>
                                         {h}
                                     </li>
@@ -307,12 +290,12 @@ export function ProjectsView({ onBack, lang }: ViewProps) {
                         </div>
 
                         <div className="pt-2 border-t border-[#7ee787]/10 space-y-1">
-                            <p className="text-[10px]">
+                            <p className="text-[clamp(8px,0.5vw,10px)]">
                                 <span className="text-[#6e7681]">GitHub: </span>
                                 <span className="text-[#79c0ff]">{p.github}</span>
                             </p>
                             {p.live && (
-                                <p className="text-[10px]">
+                                <p className="text-[clamp(8px,0.5vw,10px)]">
                                     <span className="text-[#6e7681]">Demo: </span>
                                     <span className="text-[#79c0ff]">{p.live}</span>
                                 </p>
@@ -327,20 +310,29 @@ export function ProjectsView({ onBack, lang }: ViewProps) {
 
 export function SocialView({ onBack }: ViewProps) {
     useEsc(onBack);
+    const socialLinks = [
+        { label: 'GitHub', value: profile.github, href: profile.github, icon: <GitFork className="w-3.5 h-3.5 stroke-[2]" /> },
+        { label: 'LinkedIn', value: profile.linkedin, href: profile.linkedin, icon: <UserCheck className="w-3.5 h-3.5 stroke-[2]" /> },
+        { label: 'Instagram', value: profile.instagram, href: profile.instagram, icon: <Camera className="w-3.5 h-3.5 stroke-[2]" /> },
+        { label: 'Email', value: profile.email, href: `mailto:${profile.email}`, icon: <Mail className="w-3.5 h-3.5 stroke-[2]" /> },
+    ];
     return (
         <div className="flex flex-col h-full">
             <Header title="◆ REDES" onBack={onBack} icon={<Share2 className="w-3.5 h-3.5 stroke-[2] shrink-0 text-[#7ee787]" />} />
             <div className="flex-1 font-mono text-sm space-y-2 overflow-y-auto pr-1">
                 <div className="divide-y divide-[#7ee787]/10 border border-[#7ee787]/15 rounded bg-black/20">
-                    {[
-                        { label: 'GitHub', value: profile.github },
-                        { label: 'LinkedIn', value: profile.linkedin },
-                        { label: 'Instagram', value: profile.instagram },
-                    ].map((s, i) => (
-                        <div key={s.label} className={`flex items-center gap-3 p-2.5 ${i === 0 ? '' : 'border-t border-[#7ee787]/10'}`}>
-                            <span className="text-[#79c0ff] text-[11px] font-bold w-16 shrink-0">{s.label}</span>
-                            <span className="text-[#7ee787] text-[11px] truncate">{s.value}</span>
-                        </div>
+                    {socialLinks.map((s, i) => (
+                        <a
+                            key={s.label}
+                            href={s.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={`flex items-center gap-3 p-2.5 hover:bg-[#7ee787]/5 transition-colors ${i === 0 ? '' : 'border-t border-[#7ee787]/10'}`}
+                        >
+                            <span className="text-[#79c0ff] shrink-0">{s.icon}</span>
+                            <span className="text-[#79c0ff] text-[clamp(9px,0.55vw,11px)] font-bold w-16 shrink-0">{s.label}</span>
+                            <span className="text-[#7ee787] text-[clamp(9px,0.55vw,11px)] truncate">{s.value}</span>
+                        </a>
                     ))}
                 </div>
             </div>
@@ -390,7 +382,7 @@ export function ContactView({ onBack, lang }: ViewProps) {
             <div className="flex-1 font-mono text-sm overflow-y-auto pr-1">
                 <form onSubmit={handleSubmit} className="p-3 border border-[#7ee787]/15 rounded bg-black/20 space-y-3">
                     <div>
-                        <p className="text-[#79c0ff] text-[11px] font-bold mb-1">
+                        <p className="text-[#79c0ff] text-[clamp(9px,0.55vw,11px)] font-bold mb-1">
                             {lang === 'es' ? 'Tu correo' : 'Your email'}
                         </p>
                         <input
@@ -398,13 +390,13 @@ export function ContactView({ onBack, lang }: ViewProps) {
                             value={email}
                             onChange={e => setEmail(e.target.value)}
                             placeholder={lang === 'es' ? 'tucorreo@ejemplo.com' : 'you@example.com'}
-                            className="w-full h-8 bg-black/40 border border-[#7ee787]/15 rounded px-2 text-[12px] text-[#7ee787] outline-none focus:border-[#7ee787]/40 font-mono placeholder:text-[#6e7681]"
+                            className="w-full h-8 bg-black/40 border border-[#7ee787]/15 rounded px-2 text-[clamp(10px,0.6vw,12px)] text-[#7ee787] outline-none focus:border-[#7ee787]/40 font-mono placeholder:text-[#6e7681]"
                             required
                         />
                     </div>
 
                     <div>
-                        <p className="text-[#79c0ff] text-[11px] font-bold mb-1">
+                        <p className="text-[#79c0ff] text-[clamp(9px,0.55vw,11px)] font-bold mb-1">
                             {lang === 'es' ? 'Asunto' : 'Subject'}
                         </p>
                         <input
@@ -412,13 +404,13 @@ export function ContactView({ onBack, lang }: ViewProps) {
                             value={subject}
                             onChange={e => setSubject(e.target.value)}
                             placeholder={lang === 'es' ? 'Asunto del mensaje...' : 'Message subject...'}
-                            className="w-full h-8 bg-black/40 border border-[#7ee787]/15 rounded px-2 text-[12px] text-[#7ee787] outline-none focus:border-[#7ee787]/40 font-mono placeholder:text-[#6e7681]"
+                            className="w-full h-8 bg-black/40 border border-[#7ee787]/15 rounded px-2 text-[clamp(10px,0.6vw,12px)] text-[#7ee787] outline-none focus:border-[#7ee787]/40 font-mono placeholder:text-[#6e7681]"
                             required
                         />
                     </div>
 
                     <div>
-                        <p className="text-[#79c0ff] text-[11px] font-bold mb-1">
+                        <p className="text-[#79c0ff] text-[clamp(9px,0.55vw,11px)] font-bold mb-1">
                             {lang === 'es' ? 'Mensaje' : 'Message'}
                         </p>
                         <textarea
@@ -426,7 +418,7 @@ export function ContactView({ onBack, lang }: ViewProps) {
                             onChange={e => setMessage(e.target.value)}
                             placeholder={lang === 'es' ? 'Escribe tu mensaje aquí...' : 'Write your message here...'}
                             rows={5}
-                            className="w-full bg-black/40 border border-[#7ee787]/15 rounded px-2 py-1.5 text-[12px] text-[#7ee787] outline-none focus:border-[#7ee787]/40 font-mono placeholder:text-[#6e7681] resize-none"
+                            className="w-full bg-black/40 border border-[#7ee787]/15 rounded px-2 py-1.5 text-[clamp(10px,0.6vw,12px)] text-[#7ee787] outline-none focus:border-[#7ee787]/40 font-mono placeholder:text-[#6e7681] resize-none"
                             required
                         />
                     </div>
@@ -434,7 +426,7 @@ export function ContactView({ onBack, lang }: ViewProps) {
                     <button
                         type="submit"
                         disabled={status === 'sending'}
-                        className="w-full py-2 bg-[#7ee787]/10 border border-[#7ee787]/30 rounded text-[12px] text-[#7ee787] font-bold hover:bg-[#7ee787]/20 transition-colors cursor-pointer font-mono disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="w-full py-2 bg-[#7ee787]/10 border border-[#7ee787]/30 rounded text-[clamp(10px,0.6vw,12px)] text-[#7ee787] font-bold hover:bg-[#7ee787]/20 transition-colors cursor-pointer font-mono disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         {status === 'sending' ? (
                             lang === 'es' ? '>_ Enviando comando...' : '>_ Connecting to mail server...'
@@ -444,14 +436,14 @@ export function ContactView({ onBack, lang }: ViewProps) {
                     </button>
 
                     {status === 'success' && (
-                        <p className="text-[#7ee787] text-[11px] glow-green">
+                        <p className="text-[#7ee787] text-[clamp(9px,0.55vw,11px)] glow-green">
                             {'>_ '}{lang === 'es'
                                 ? 'Mensaje enviado con éxito. Anthony se pondrá en contacto pronto.'
                                 : 'Message sent successfully. Anthony will get back to you soon.'}
                         </p>
                     )}
                     {status === 'error' && (
-                        <p className="text-[#ff7b72] text-[11px]">
+                        <p className="text-[#ff7b72] text-[clamp(9px,0.55vw,11px)]">
                             {'>_ '}{lang === 'es'
                                 ? 'Error: No se pudo establecer la conexión. Inténtalo de nuevo.'
                                 : 'Error: Could not establish connection. Try again.'}

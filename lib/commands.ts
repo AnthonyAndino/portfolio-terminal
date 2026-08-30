@@ -15,6 +15,7 @@ export type PanelContent =
     | { type: 'projects' }
     | { type: 'social' }
     | { type: 'contact' }
+    | { type: 'certificates' }
     | { type: 'game' }
     | { type: 'home' };
 
@@ -52,6 +53,7 @@ export function runCommand(input: string, lang: 'es' | 'en' = 'es'): CommandResu
                     { text: '  projects     → mis proyectos', color: 'green' },
                     { text: '  social       → redes sociales', color: 'green' },
                     { text: '  cv           → descargar CV', color: 'green' },
+                    { text: '  certificates → mis certificaciones', color: 'green' },
                     { text: '  contact      → contacto directo', color: 'green' },
                     { text: '  idioma <es|en> → cambiar idioma del portafolio', color: 'green' },
                     { text: '  dino         → 🦖 juego Dino Runner', color: 'green' },
@@ -69,6 +71,7 @@ export function runCommand(input: string, lang: 'es' | 'en' = 'es'): CommandResu
                     { text: '  projects     → my projects', color: 'green' },
                     { text: '  social       → social networks', color: 'green' },
                     { text: '  cv           → download CV', color: 'green' },
+                    { text: '  certificates → my certifications', color: 'green' },
                     { text: '  contact      → direct contact', color: 'green' },
                     { text: '  lang <es|en>  → change portfolio language', color: 'green' },
                     { text: '  dino         → 🦖 Dino Runner game', color: 'green' },
@@ -118,6 +121,14 @@ export function runCommand(input: string, lang: 'es' | 'en' = 'es'): CommandResu
                 type: 'lines',
                 lines: SHORT,
                 panel: { type: 'projects' },
+            };
+
+        case 'certificates':
+        case 'certs':
+            return {
+                type: 'lines',
+                lines: SHORT,
+                panel: { type: 'certificates' },
             };
 
         case 'social':

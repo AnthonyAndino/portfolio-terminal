@@ -92,6 +92,7 @@ const panelIcons: Record<string, React.ReactNode> = {
     projects: <FolderCode className="text-[#7ee787] w-3 h-3 stroke-[2] shrink-0" />,
     social: <Share2 className="text-[#7ee787] w-3 h-3 stroke-[2] shrink-0" />,
     contact: <Mail className="text-[#7ee787] w-3 h-3 stroke-[2] shrink-0" />,
+    certificates: <GraduationCap className="text-[#7ee787] w-3 h-3 stroke-[2] shrink-0" />,
     game: <Gamepad2 className="text-[#7ee787] w-3.5 h-3.5 stroke-[2] shrink-0" />,
 };
 
@@ -235,7 +236,7 @@ export default function Terminal() {
         // CV download interceptor
         if (cmd === 'cv' || cmd === 'resume' || cmd === 'curriculum') {
             const isEn = lang === 'en';
-            const filename = isEn ? 'CV_Anthony_Andino_en.pdf' : 'CV_Anthony_Andino_es.pdf';
+            const filename = isEn ? 'Anthony_Andino_en.pdf' : 'Anthony_Andino_es.pdf';
             const a = document.createElement('a');
             a.href = `/cv/${filename}`;
             a.download = filename;

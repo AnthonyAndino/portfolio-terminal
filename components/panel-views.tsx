@@ -444,12 +444,78 @@ export function ContactView({ onBack, lang }: ViewProps) {
                     )}
                     {status === 'error' && (
                         <p className="text-[#ff7b72] text-[clamp(9px,0.55vw,11px)]">
-                            {'>_ '}{lang === 'es'
+                            {'> _ '}{lang === 'es'
                                 ? 'Error: No se pudo establecer la conexión. Inténtalo de nuevo.'
                                 : 'Error: Could not establish connection. Try again.'}
                         </p>
                     )}
                 </form>
+            </div>
+        </div>
+    );
+}
+
+export function CertificatesView({ onBack, lang }: ViewProps) {
+    useEsc(onBack);
+
+    const certificates = [
+        {
+            name: 'Python for Data Science',
+            issuer: 'Cognitive Class (IBM)',
+            date: '2026',
+            description: {
+                en: 'Certification covering Python fundamentals for data science including data analysis, visualization with Matplotlib, and working with libraries like Pandas and NumPy.',
+                es: 'Certificación que cubre los fundamentos de Python para ciencia de datos incluyendo análisis de datos, visualización con Matplotlib, y trabajo con librerías como Pandas y NumPy.',
+            },
+            tech: ['Python', 'Pandas', 'NumPy', 'Matplotlib'],
+            file: '/cv/Python for Data Science.pdf',
+        },
+    ];
+
+    return (
+        <div className="flex flex-col h-full">
+            <Header
+                title={lang === 'es' ? '◆ CERTIFICACIONES' : '◆ CERTIFICATES'}
+                onBack={onBack}
+                lang={lang}
+                icon={<GraduationCap className="w-3.5 h-3.5 stroke-[2] shrink-0 text-[#7ee787]" />}
+            />
+            <div className="flex-1 font-mono text-sm space-y-3 overflow-y-auto pr-1">
+                {certificates.map((cert, i) => (
+                    <div key={i} className="p-3 border border-[#7ee787]/15 rounded bg-black/20 space-y-2">
+                        <div className="flex items-start justify-between">
+                            <div>
+                                <p className="text-[#7ee787] text-xs font-bold glow-green">{cert.name}</p>
+                                <p className="text-[#79c0ff] text-[clamp(9px,0.55vw,11px)] mt-0.5">{cert.issuer}</p>
+                                <p className="text-[#d9a066] text-[clamp(9px,0.55vw,11px)] mt-0.5">{cert.date}</p>
+                            </div>
+                            <a
+                                href={cert.file}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-[clamp(8px,0.5vw,10px)] text-[#7ee787] bg-[#7ee787]/10 border border-[#7ee787]/30 px-2 py-1 rounded hover:bg-[#7ee787]/20 transition-colors shrink-0"
+                            >
+                                {lang === 'es' ? '[ VER PDF ]' : '[ VIEW PDF ]'}
+                            </a>
+                        </div>
+                        <p className="text-[#7ee787] text-[clamp(9px,0.55vw,11px)] leading-relaxed">{cert.description[lang]}</p>
+                        <div className="flex flex-wrap gap-1.5">
+                            {cert.tech.map(t => (
+                                <span key={t} className="text-[clamp(8px,0.5vw,10px)] text-[#79c0ff] bg-[#79c0ff]/10 px-1.5 py-0.5 rounded">
+                                    {t}
+                                </span>
+                            ))}
+                        </div>
+                    </div>
+                ))}
+
+                <div className="p-2 border border-[#7ee787]/10 rounded bg-black/10">
+                    <p className="text-[#6e7681] text-[clamp(8px,0.5vw,10px)] text-center">
+                        {lang === 'es'
+                            ? '> Más certificaciones en progreso...'
+                            : '> More certifications in progress...'}
+                    </p>
+                </div>
             </div>
         </div>
     );

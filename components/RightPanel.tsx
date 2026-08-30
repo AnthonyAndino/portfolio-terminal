@@ -9,6 +9,7 @@ import {
     ProjectsView,
     SocialView,
     ContactView,
+    CertificatesView,
 } from './panel-views';
 import DinoGame from './DinoGame';
 import BootAnimation from './BootAnimation';
@@ -39,6 +40,8 @@ export default function RightPanel({ panel, onBackToGame, lang }: Props) {
                     <SocialView onBack={onBackToGame} lang={lang} />
                 ) : panel.type === 'contact' ? (
                     <ContactView onBack={onBackToGame} lang={lang} />
+                ) : panel.type === 'certificates' ? (
+                    <CertificatesView onBack={onBackToGame} lang={lang} />
                 ) : panel.type === 'home' ? (
                     <BootAnimation />
                 ) : panel.type === 'game' ? (

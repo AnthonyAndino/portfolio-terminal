@@ -233,27 +233,21 @@ export default function Terminal() {
         setCmdHistory(prev => [trimmed, ...prev.slice(0, 49)]);
         setHistIdx(-1);
 
-        // CV download interceptor
+        // CV interceptor (opens in new tab)
         if (cmd === 'cv' || cmd === 'resume' || cmd === 'curriculum') {
             const isEn = lang === 'en';
             const filename = isEn ? 'Anthony_Andino_en.pdf' : 'Anthony_Andino_es.pdf';
-            const a = document.createElement('a');
-            a.href = `/cv/${filename}`;
-            a.download = filename;
-            a.style.display = 'none';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
+            window.open(`/cv/${filename}`, '_blank', 'noopener,noreferrer');
             setHistory(prev => [
                 ...prev,
                 { kind: 'input', text: trimmed },
                 {
                     kind: 'output',
                     lines: isEn ? [
-                        { text: 'Downloading CV...', color: 'green' },
+                        { text: 'Opening CV in a new tab...', color: 'green' },
                         { text: filename, color: 'blue' },
                     ] : [
-                        { text: 'Descargando CV...', color: 'green' },
+                        { text: 'Abriendo CV en una nueva pestaña...', color: 'green' },
                         { text: filename, color: 'blue' },
                     ],
                 }

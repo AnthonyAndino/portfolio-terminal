@@ -236,7 +236,7 @@ export default function Terminal() {
         // CV interceptor (opens in new tab)
         if (cmd === 'cv' || cmd === 'resume' || cmd === 'curriculum') {
             const isEn = lang === 'en';
-            const filename = isEn ? 'Anthony_Andino_en.pdf' : 'Anthony_Andino_es.pdf';
+            const filename = isEn ? 'CV_Anthony_Andino_EN.pdf' : 'CV_Anthony_Andino_ES.pdf';
             window.open(`/cv/${filename}`, '_blank', 'noopener,noreferrer');
             setHistory(prev => [
                 ...prev,

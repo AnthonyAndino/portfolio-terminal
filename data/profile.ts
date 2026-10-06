@@ -13,6 +13,15 @@ export interface Education {
     details: { en: string; es: string };
 }
 
+export interface Certificate {
+    name: string;
+    issuer: string;
+    date: string;
+    description: { en: string; es: string };
+    tech: string[];
+    file: string;
+}
+
 export interface Service {
     title: { en: string; es: string };
     description: { en: string; es: string };
@@ -20,22 +29,25 @@ export interface Service {
 
 export const profile = {
     name: 'Anthony Andino',
+    fullName: 'Anthony Jafed Andino Marinero',
     role: {
-        en: 'Junior Software Developer',
-        es: 'Desarrollador de Software Junior',
+        en: 'Licentiate in Informatics Administration | Web & Systems Developer',
+        es: 'Licenciado en Informática Administrativa | Desarrollador Web y Sistemas',
     },
-    location: 'Honduras 🇭🇳',
+    location: 'Tegucigalpa, Honduras 🇭🇳',
     bio: {
-        en: "Hi, I'm a junior developer with a strong interest in web development and software development. I enjoy building projects, learning new technologies, and improving my programming skills. Currently focused on developing practical projects and gaining real-world experience in the IT field.",
-        es: "Hola, soy un desarrollador junior con un gran interés en el desarrollo web y de software. Me divierte construir proyectos, aprender de nuevas tecnologías y mejorar mis habilidades de programación. Actualmente me enfoco en desarrollar proyectos prácticos y obtener experiencia real en el rubro TI.",
+        en: "Licentiate in Informatics Administration with experience in technical support, database incident resolution, and web development. Identified and corrected accounting discrepancies using SQL queries, maintained equipment and network infrastructure, and developed functionality and visual reports in web systems using C# and JavaScript. Knowledgeable in Linux, networking, and intermediate Excel.",
+        es: "Licenciado en Informática Administrativa, con experiencia en soporte técnico, resolución de incidencias en bases de datos y desarrollo web. He identificado y corregido descuadres contables mediante consultas SQL, dado mantenimiento a equipos e infraestructura de red, y desarrollado funcionalidades y reportes visuales en sistemas web usando C# y JavaScript. Cuento con conocimientos de Linux y redes, y manejo intermedio de Excel.",
     },
     status: {
         en: 'Open to work / Available',
         es: 'Disponible para trabajar',
     },
     github: 'https://github.com/AnthonyAndino',
-    linkedin: 'https://www.linkedin.com/in/anthony-andino-aa6bb1323',
+    linkedin: 'https://www.linkedin.com/in/anthony-andino-ad',
+    phone: '+504 9901-4535',
     email: 'anthonyandino959@gmail.com',
+    website: 'https://anthonyandino.vercel.app',
     instagram: 'https://www.instagram.com/aandino_07/?hl=en',
 };
 
@@ -47,156 +59,187 @@ export const experience: Experience[] = [
             es: 'Practicante de Desarrollo Web / Sistemas - Porsalud',
         },
         description: {
-            en: 'Internship at Porsalud supporting the maintenance and improvement of a user management web platform. Worked with C#, JavaScript, and SQL Server in the system environment.',
-            es: 'Práctica profesional en Porsalud apoyando en el mantenimiento y mejora de una plataforma web de gestión de usuarios. Trabajé con C#, JavaScript y SQL Server en el entorno del sistema.',
+            en: 'Completed user management module in C# and JavaScript, resolved stored procedure issues in SQL Server, and conducted technical code reviews.',
+            es: 'Implementación de funciones en C# y JavaScript para módulo de gestión de usuarios, resolución de incidencias en procedimientos almacenados y revisión técnica de código.',
         },
         highlights: {
             en: [
-                'Supported maintenance and improvement of a user management web platform',
-                'Worked with C#, JavaScript, and SQL Server technologies',
-                'Collaborated on reviewing in-development features',
-                'Identified and reported application issues',
-                'Participated in system process validation',
+                'Implemented functions in C# and JavaScript to complete the user management module of a platform used by staff across multiple company locations (including international staff), fixing broken functionality and clock-in charts.',
+                'Resolved issues in stored procedures and functions related to system logic, using test databases to validate fixes.',
+                'Actively participated in technical code reviews for new features prior to production deployment.',
             ],
             es: [
-                'Apoyé en el mantenimiento y mejora de una plataforma web de gestión de usuarios',
-                'Trabajé con tecnologías como C#, JavaScript y SQL Server',
-                'Colaboré en la revisión de funcionalidades en desarrollo',
-                'Identifiqué y reporté incidencias en la aplicación',
-                'Participé en la validación de procesos dentro del sistema',
+                'Implementé funciones en C# y JavaScript para completar el módulo de gestión de usuarios de una plataforma utilizada por personal de múltiples sedes de la empresa, incluyendo colaboradores en otros países, corrigiendo funcionalidades incompletas y gráficos de marcaciones de entrada que no operaban correctamente.',
+                'Resolví incidencias en procedimientos y funciones almacenadas relacionadas con la lógica del sistema, utilizando la base de datos de pruebas para validar las correcciones.',
+                'Participé activamente en la revisión técnica de nuevas funcionalidades en etapa de desarrollo, verificando lógica de código y reportando errores antes de su implementación.',
             ],
         },
-        tech: ['C#', 'JavaScript', 'SQL Server'],
+        tech: ['C#', 'JavaScript', 'SQL Server', 'SQL'],
     },
     {
-        period: '2024',
+        period: 'Ago 2024 - Oct 2024',
         title: {
-            en: 'Database Assistant - Private Business',
-            es: 'Asistente de Base de Datos - Empresa Privada',
+            en: 'Technical Support Assistant - Cooperativa La Reyna',
+            es: 'Asistente de Soporte Técnico - Cooperativa La Reyna',
         },
         description: {
-            en: 'Provided database support for a private company, creating SQL queries to extract and analyze customer data. Generated key reports for administrative decision-making and gained hands-on experience in database management.',
-            es: 'Soporte de base de datos para una empresa privada, creando consultas SQL para extraer y analizar datos de clientes. Generación de informes clave para la toma de decisiones administrativas y experiencia práctica en gestión de bases de datos.',
+            en: 'Resolved accounting discrepancy incidents via SQL queries, managed OS and file migrations, and troubleshot internal IP phones and network cabling.',
+            es: 'Resolución de descuadres contables mediante consultas SQL, migración de sistemas operativos y archivos, y soporte a telefonía IP y cableado de red.',
         },
         highlights: {
             en: [
-                'Created SQL queries to extract and analyze customer data',
-                'Generated reports for administrative use and decision-making',
-                'Hands-on experience with relational databases and MariaDB',
-                'Data filtering, organization, and efficient analysis',
+                'Identified and resolved 4 accounting discrepancy incidents by comparing database records to locate system differences.',
+                'Executed SQL queries to validate and reconcile customer savings and credit account data.',
+                'Migrated operating systems and files for 2 workstations to new hardware, guaranteeing data continuity during upgrades.',
+                'Diagnosed and fixed 5 internal IP phones, replacing faulty network cabling and reassigning IP addresses to restore calling capability.',
             ],
             es: [
-                'Creación de consultas SQL para extraer y analizar datos de clientes',
-                'Generación de informes administrativos para toma de decisiones',
-                'Experiencia práctica con bases de datos relacionales y MariaDB',
-                'Filtrado, organización y análisis eficiente de datos',
+                'Identifiqué y resolví 4 incidencias de descuadres contables, comparando registros dentro de la base de datos para localizar diferencias registradas en el sistema.',
+                'Ejecuté consultas SQL para la validación y corrección de datos en las cuentas de los clientes, resolviendo inconsistencias en cuentas de ahorro y crédito.',
+                'Migré el sistema operativo y archivos de 2 computadoras hacia equipos nuevos, garantizando la continuidad de la información durante la actualización de hardware.',
+                'Diagnostiqué y solucioné fallas en 5 teléfonos IP internos, incluyendo reemplazo de cableado de red defectuoso y reasignación de direcciones IP, restableciendo la recepción de llamadas.',
             ],
         },
-        tech: ['SQL', 'MariaDB', 'Excel'],
+        tech: ['SQL', 'Soporte Técnico', 'Redes', 'Linux', 'Excel'],
     },
     {
-        period: '2023 - Present',
+        period: '2023 - Presente',
         title: {
-            en: 'Self-taught Developer',
-            es: 'Desarrollador Autodidacta',
+            en: 'Web & Software Developer',
+            es: 'Desarrollador Web y de Software',
         },
         description: {
-            en: 'Continuous self-directed learning and project development across web, desktop, and database technologies. Building real-world applications to strengthen problem-solving and technical skills.',
-            es: 'Aprendizaje autodidacta continuo y desarrollo de proyectos en tecnologías web, de escritorio y bases de datos. Creación de aplicaciones reales para fortalecer habilidades técnicas y de resolución de problemas.',
+            en: 'Development of web application projects with JavaScript, TypeScript, React, and Python, including financial dashboards, REST APIs, and full-stack applications.',
+            es: 'Desarrollo de proyectos de aplicaciones web con JavaScript, TypeScript, React y Python, incluyendo dashboards financieros, APIs REST y aplicaciones full-stack.',
         },
         highlights: {
             en: [
-                'Built full-stack web apps with React, Next.js, Node.js, and Python',
-                'Developed database-driven applications with PostgreSQL, MySQL, and Prisma',
-                'Created desktop applications with C++, Qt Framework, and C#',
-                'Published a VS Code extension (Smart Theme Switcher)',
-                'Built REST APIs with Django REST, Express, and Laravel',
+                'Developed web applications using JavaScript, TypeScript, React, and Next.js.',
+                'Created a personal financial dashboard featuring KPI visualization, comparative charts, and expense distribution.',
+                'Built full-stack web applications and developer utilities.',
             ],
             es: [
-                'Creación de apps full-stack con React, Next.js, Node.js y Python',
-                'Desarrollo de aplicaciones con PostgreSQL, MySQL y Prisma',
-                'Creación de aplicaciones de escritorio con C++, Qt Framework y C#',
-                'Publicación de una extensión de VS Code (Smart Theme Switcher)',
-                'Construcción de APIs REST con Django REST, Express y Laravel',
+                'Desarrollo de proyectos web con JavaScript, TypeScript y React, incluyendo un dashboard financiero personal con visualización de indicadores, gráficos comparativos y distribución de gastos.',
+                'Creación de aplicaciones web full-stack con PostgreSQL, MySQL, Node.js y Python.',
+                'Publicación de herramientas para desarrolladores y proyectos de código abierto.',
             ],
         },
-        tech: ['React', 'Next.js', 'Node.js', 'Python', 'TypeScript', 'PostgreSQL', 'MySQL', 'C++', 'Qt', 'Django', 'Laravel', 'Prisma'],
+        tech: ['React', 'Next.js', 'TypeScript', 'Node.js', 'Python', 'Tailwind', 'PostgreSQL'],
     },
 ];
 
 export const education: Education[] = [
     {
-        period: '2017 - 2019',
+        period: 'Ene 2020 - Sep 2026',
         degree: {
-            en: 'High School',
-            es: 'Bachillerato',
+            en: "Licentiate Degree in Informatics Administration",
+            es: "Licenciatura en Informática Administrativa",
         },
-        institution: '',
+        institution: 'Universidad Nacional Autónoma de Honduras (UNAH), Tegucigalpa, Honduras',
         details: {
-            en: 'Completed secondary education with a focus on general academic subjects, developing foundational skills in mathematics, communication, and problem solving.',
-            es: 'Educación secundaria completada con un enfoque general académico, desarrollando habilidades fundamentales en razonamiento matemático, lógica computacional y resolución de problemas.',
+            en: 'University degree focused on system administration, software development, relational database management, network infrastructure, and IT management.',
+            es: 'Licenciatura enfocada en gestión de tecnologías de información, desarrollo de software, administración de bases de datos relacionales, infraestructura de redes y gestión de proyectos TI.',
         },
     },
+];
+
+export const certificates: Certificate[] = [
     {
-        period: '2020 - 2026',
-        degree: {
-            en: "Bachelor's Degree in Informatics Administration",
-            es: "Licenciatura en Administración de Empresas de Informática",
+        name: 'Python 101 for Data Science',
+        issuer: 'CognitiveClass.ai (IBM)',
+        date: 'Julio 2026',
+        description: {
+            en: 'Certification covering Python fundamentals for data science, data analysis, visualization with Matplotlib, and working with Pandas and NumPy.',
+            es: 'Certificación que cubre los fundamentos de Python para ciencia de datos, análisis de datos, visualización con Matplotlib y uso de librerías como Pandas y NumPy.',
         },
-        institution: 'Universidad Nacional Autónoma de Honduras (UNAH)',
-        details: {
-            en: 'Completed all required coursework and professional internship. Pending official graduation. Focused on programming, SQL databases, and system analysis.',
-            es: 'Curso completo de asignaturas y práctica profesional en la Universidad Nacional Autónoma de Honduras (UNAH). Actualmente en espera de la titulación oficial. Enfocado en programación, bases de datos y análisis de sistemas.',
+        tech: ['Python', 'Data Science', 'Pandas', 'NumPy'],
+        file: '/cv/Certificados/Python for Data Science.pdf',
+    },
+    {
+        name: 'Introducción a Ciberseguridad',
+        issuer: 'Cisco Networking Academy',
+        date: 'Septiembre 2026',
+        description: {
+            en: 'Fundamental concepts of cybersecurity, threat intelligence, data protection, privacy, and organizational security best practices.',
+            es: 'Conceptos fundamentales de ciberseguridad, amenazas cibernéticas, protección de datos y redes, privacidad y mejores prácticas de seguridad.',
         },
+        tech: ['Ciberseguridad', 'Seguridad TI', 'Redes', 'Cisco'],
+        file: '/cv/Certificados/Introduction_to_Cybersecurity_certificate_Anthony_Andino.pdf',
+    },
+    {
+        name: 'Introduction to Linux (LFS101)',
+        issuer: 'The Linux Foundation',
+        date: 'Septiembre 2026',
+        description: {
+            en: 'Comprehensive Linux foundation training covering command line, system administration, filesystems, and shell environment.',
+            es: 'Formación fundamental en Linux cubriendo la línea de comandos, administración del sistema, sistemas de archivos y entornos bash/shell.',
+        },
+        tech: ['Linux', 'Bash', 'Administración de Sistemas'],
+        file: '/cv/Certificados/Introduction_to_Linux.pdf',
+    },
+    {
+        name: 'Conceptos Básicos de Redes',
+        issuer: 'Cisco Networking Academy',
+        date: 'Octubre 2026',
+        description: {
+            en: 'Networking principles, OSI and TCP/IP models, IP addressing, media transmission, routing, and basic device configuration.',
+            es: 'Principios de redes de computadoras, modelos OSI y TCP/IP, direccionamiento IP, medios de transmisión, enrutamiento y configuración básica de dispositivos.',
+        },
+        tech: ['Redes', 'Direccionamiento IP', 'TCP/IP', 'Cisco'],
+        file: '/cv/Certificados/Networking_Basics.pdf',
     },
 ];
 
 export const services: Service[] = [
     {
         title: {
-            en: 'Programming & Development',
-            es: 'Programación y Desarrollo',
+            en: 'Web & Software Development',
+            es: 'Desarrollo Web y Software',
         },
         description: {
-            en: 'Experience with C, C++, Python, Java, web development (HTML, CSS, JS, PHP). Passionate about learning new technologies.',
-            es: 'Experiencia con C, C++, Python, Java, desarrollo web (HTML, CSS, JS, PHP). Apasionado por aprender nuevas tecnologías.',
+            en: 'Full-stack & front-end development with JavaScript, TypeScript, React, Next.js, C#, Node.js, and Python.',
+            es: 'Desarrollo web y de software usando JavaScript, TypeScript, React, Next.js, C#, Node.js y Python.',
         },
     },
     {
         title: {
-            en: 'Database Management',
-            es: 'Gestión de Bases de Datos',
+            en: 'Database Incident Resolution & SQL',
+            es: 'Resolución de Incidencias en BD y SQL',
         },
         description: {
-            en: 'SQL queries, data filtering, report generation. Knowledge of relational databases (MySQL, PostgreSQL, SQL Server) and MariaDB.',
-            es: 'Consultas SQL, filtrado de datos, generación de informes. Conocimiento de bases de datos relacionales (MySQL, PostgreSQL, SQL Server) y MariaDB.',
+            en: 'SQL queries, stored procedure debugging, data validation, accounting discrepancy fixes, and relational database management (MySQL, PostgreSQL, SQL Server).',
+            es: 'Consultas SQL, corrección de procedimientos almacenados, validación de datos, resolución de descuadres contables y gestión de bases de datos relacionales (MySQL, PostgreSQL, SQL Server).',
         },
     },
     {
         title: {
-            en: 'Data Analysis',
-            es: 'Análisis de Datos',
+            en: 'IT Support & Network Maintenance',
+            es: 'Soporte Técnico y Redes',
         },
         description: {
-            en: 'Skilled in Excel for data organization and reporting. Currently learning Power BI and modern data visualization tools.',
-            es: 'Competente en Excel para la organización de datos y generación de reportes. Actualmente aprendiendo Power BI y herramientas de visualización.',
+            en: 'Hardware diagnostics and maintenance, OS migration, IP phone system troubleshooting, network cabling, and Linux support.',
+            es: 'Diagnóstico y mantenimiento de hardware, migración de sistemas operativos, solución de fallas en telefonía IP, cableado de red y soporte en Linux.',
         },
     },
     {
         title: {
-            en: 'IT Support & Systems',
-            es: 'Soporte TI y Sistemas',
+            en: 'Data Analysis & Excel',
+            es: 'Análisis de Datos y Excel',
         },
         description: {
-            en: 'Technical support, system configuration, troubleshooting. Software installation, networking basics, and system maintenance.',
-            es: 'Soporte técnico, configuración de sistemas, resolución de problemas. Instalación de software, fundamentos de redes y mantenimiento.',
+            en: 'Intermediate Excel data management, report generation, data filtering, and data science with Python.',
+            es: 'Manejo intermedio de Excel para organización y análisis de datos, generación de reportes y ciencia de datos con Python.',
         },
     },
 ];
 
 export const skills = {
+    backend: ['C#', 'JavaScript', 'Node.js', 'PHP', 'Express', 'Python', 'C++', 'Java', 'C'],
     frontend: ['HTML', 'CSS', 'JavaScript', 'TypeScript', 'React', 'Next.js', 'Tailwind', 'Bootstrap', 'jQuery'],
-    backend: ['C', 'C++', 'C#', 'Python', 'Java', 'PHP', 'Node.js', 'Express', 'Django', 'Laravel'],
-    databases: ['MySQL', 'PostgreSQL', 'SQL Server', 'MongoDB', 'Prisma'],
-    tools: ['Git', 'GitHub', 'VS Code', 'Visual Studio', 'PyCharm', 'WebStorm', 'Rider', 'Figma', 'Postman', 'Bash'],
+    databases: ['MySQL', 'PostgreSQL', 'SQL', 'Prisma', 'MongoDB'],
+    infrastructure: ['Soporte técnico', 'Mantenimiento de equipos', 'Redes básicas', 'Linux'],
+    tools: ['Git', 'GitHub', 'Postman', 'Excel', 'VS Code', 'Visual Studio'],
+    soft: ['Trabajo en equipo', 'Aprendizaje rápido', 'Adaptación a nuevos entornos'],
+    languages: ['Español (nativo)', 'Inglés (B1 – intermedio)'],
 };
+

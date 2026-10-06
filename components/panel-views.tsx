@@ -1,9 +1,9 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
-import { profile, skills, experience, education, services } from '@/data/profile';
+import { profile, skills, experience, education, services, certificates } from '@/data/profile';
 import { projects } from '@/data/projects';
 import { TechIcon } from '@/components/tech-icons';
-import { User, Wrench, Briefcase, GraduationCap, Cpu, FolderCode, Share2, Mail, Terminal, GitFork, UserCheck, Camera } from 'lucide-react';
+import { User, Wrench, Briefcase, GraduationCap, Cpu, FolderCode, Share2, Mail, Terminal, GitFork, UserCheck, Camera, Phone } from 'lucide-react';
 import emailjs from '@emailjs/browser';
 
 interface ViewProps {
@@ -44,9 +44,9 @@ function useEsc(onBack: () => void) {
 export function WhoamiView({ onBack, lang }: ViewProps) {
     useEsc(onBack);
     const stats = [
-        { label: lang === 'es' ? 'Proyectos' : 'Projects', value: '6+' },
-        { label: lang === 'es' ? 'Tecnologías' : 'Technologies', value: '20+' },
-        { label: lang === 'es' ? 'Estudiando' : 'Learning', value: lang === 'es' ? '4+ años' : '4+ years' },
+        { label: lang === 'es' ? 'Proyectos' : 'Projects', value: '7+' },
+        { label: lang === 'es' ? 'Tecnologías' : 'Technologies', value: '25+' },
+        { label: lang === 'es' ? 'Certificados' : 'Certificates', value: '4' },
         { label: lang === 'es' ? 'Idiomas' : 'Languages', value: '2' },
     ];
     return (
@@ -54,11 +54,15 @@ export function WhoamiView({ onBack, lang }: ViewProps) {
             <Header title={lang === 'es' ? '◆ QUIEN SOY' : '◆ WHOAMI'} onBack={onBack} lang={lang} icon={<User className="w-3.5 h-3.5 stroke-[2] shrink-0 text-[#7ee787]" />} />
             <div className="flex-1 font-mono text-sm space-y-3 overflow-y-auto pr-1">
                 <div className="p-3 border border-[#7ee787]/15 rounded bg-black/20">
-                    <p className="text-[#7ee787] font-bold glow-green text-base">{profile.name}</p>
+                    <p className="text-[#7ee787] font-bold glow-green text-base">{profile.fullName || profile.name}</p>
                     <p className="text-[#79c0ff] text-xs mt-0.5">{profile.role[lang]}</p>
                     <p className="text-[#6e7681] text-xs mt-0.5">{profile.location}</p>
                     <div className="mt-3">
                         <p className="text-[#7ee787] text-xs leading-relaxed">{profile.bio[lang]}</p>
+                    </div>
+                    <div className="mt-3 flex flex-wrap gap-2 text-xs text-[#79c0ff]">
+                        <span>📧 {profile.email}</span>
+                        <span>📱 {profile.phone}</span>
                     </div>
                     <div className="mt-3 flex items-center gap-2">
                         <span className="w-2 h-2 rounded-full bg-[#7ee787] glow-green" />
@@ -74,8 +78,6 @@ export function WhoamiView({ onBack, lang }: ViewProps) {
                         </div>
                     ))}
                 </div>
-
-
             </div>
         </div>
     );
@@ -85,10 +87,12 @@ export function SkillsView({ onBack, lang }: ViewProps) {
     useEsc(onBack);
 
     const bars = [
-        { label: lang === 'es' ? 'Frontend' : 'Frontend', items: skills.frontend, pct: 85 },
-        { label: lang === 'es' ? 'Backend' : 'Backend', items: skills.backend, pct: 75 },
-        { label: lang === 'es' ? 'Bases de datos' : 'Databases', items: skills.databases, pct: 70 },
-        { label: lang === 'es' ? 'Herramientas' : 'Tools', items: skills.tools, pct: 80 },
+        { label: lang === 'es' ? 'Back-End' : 'Back-End', items: skills.backend, pct: 85 },
+        { label: lang === 'es' ? 'Front-End' : 'Front-End', items: skills.frontend, pct: 85 },
+        { label: lang === 'es' ? 'Bases de Datos & SQL' : 'Databases & SQL', items: skills.databases, pct: 80 },
+        { label: lang === 'es' ? 'Infraestructura & Soporte' : 'Infrastructure & Support', items: skills.infrastructure, pct: 80 },
+        { label: lang === 'es' ? 'Herramientas' : 'Tools', items: skills.tools, pct: 85 },
+        { label: lang === 'es' ? 'Idiomas & Habilidades Blandas' : 'Languages & Soft Skills', items: [...skills.languages, ...skills.soft], pct: 90 },
     ];
 
     return (
@@ -313,8 +317,9 @@ export function SocialView({ onBack }: ViewProps) {
     const socialLinks = [
         { label: 'GitHub', value: profile.github, href: profile.github, icon: <GitFork className="w-3.5 h-3.5 stroke-[2]" /> },
         { label: 'LinkedIn', value: profile.linkedin, href: profile.linkedin, icon: <UserCheck className="w-3.5 h-3.5 stroke-[2]" /> },
-        { label: 'Instagram', value: profile.instagram, href: profile.instagram, icon: <Camera className="w-3.5 h-3.5 stroke-[2]" /> },
         { label: 'Email', value: profile.email, href: `mailto:${profile.email}`, icon: <Mail className="w-3.5 h-3.5 stroke-[2]" /> },
+        { label: 'Teléfono', value: profile.phone, href: `tel:${profile.phone.replace(/\s+/g, '')}`, icon: <Phone className="w-3.5 h-3.5 stroke-[2]" /> },
+        { label: 'Instagram', value: profile.instagram, href: profile.instagram, icon: <Camera className="w-3.5 h-3.5 stroke-[2]" /> },
     ];
     return (
         <div className="flex flex-col h-full">
@@ -458,20 +463,6 @@ export function ContactView({ onBack, lang }: ViewProps) {
 export function CertificatesView({ onBack, lang }: ViewProps) {
     useEsc(onBack);
 
-    const certificates = [
-        {
-            name: 'Python for Data Science',
-            issuer: 'Cognitive Class (IBM)',
-            date: '2026',
-            description: {
-                en: 'Certification covering Python fundamentals for data science including data analysis, visualization with Matplotlib, and working with libraries like Pandas and NumPy.',
-                es: 'Certificación que cubre los fundamentos de Python para ciencia de datos incluyendo análisis de datos, visualización con Matplotlib, y trabajo con librerías como Pandas y NumPy.',
-            },
-            tech: ['Python', 'Pandas', 'NumPy', 'Matplotlib'],
-            file: '/cv/Python for Data Science.pdf',
-        },
-    ];
-
     return (
         <div className="flex flex-col h-full">
             <Header
@@ -493,7 +484,7 @@ export function CertificatesView({ onBack, lang }: ViewProps) {
                                 href={cert.file}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-[clamp(8px,0.5vw,10px)] text-[#7ee787] bg-[#7ee787]/10 border border-[#7ee787]/30 px-2 py-1 rounded hover:bg-[#7ee787]/20 transition-colors shrink-0"
+                                className="text-[clamp(8px,0.5vw,10px)] text-[#7ee787] bg-[#7ee787]/10 border border-[#7ee787]/30 px-2 py-1 rounded hover:bg-[#7ee787]/20 transition-colors shrink-0 font-bold"
                             >
                                 {lang === 'es' ? '[ VER PDF ]' : '[ VIEW PDF ]'}
                             </a>
@@ -512,8 +503,8 @@ export function CertificatesView({ onBack, lang }: ViewProps) {
                 <div className="p-2 border border-[#7ee787]/10 rounded bg-black/10">
                     <p className="text-[#6e7681] text-[clamp(8px,0.5vw,10px)] text-center">
                         {lang === 'es'
-                            ? '> Más certificaciones en progreso...'
-                            : '> More certifications in progress...'}
+                            ? '> 4 Certificaciones oficiales completadas'
+                            : '> 4 Official certifications completed'}
                     </p>
                 </div>
             </div>

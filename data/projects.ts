@@ -11,6 +11,30 @@ export interface Project {
 
 export const projects: Project[] = [
     {
+        id: 'fin-dashboard',
+        name: 'Dashboard Financiero Personal',
+        description: {
+            en: 'Personal financial dashboard featuring key performance indicators (KPIs), comparative progress charts, and expense distribution visualizations.',
+            es: 'Dashboard financiero personal con visualización de indicadores clave (KPIs), gráficos comparativos de progreso y distribución interactiva de gastos.',
+        },
+        tech: ['JavaScript', 'TypeScript', 'React', 'Next.js', 'Tailwind'],
+        github: 'https://github.com/AnthonyAndino',
+        live: 'https://anthonyandino.vercel.app',
+        img: '/projects/daymark.png',
+        highlights: {
+            en: [
+                'KPI indicators and financial summaries',
+                'Comparative progress and spending charts',
+                'Categorized expense distribution analysis',
+            ],
+            es: [
+                'Visualización de indicadores clave (KPIs) y resúmenes',
+                'Gráficos comparativos de progreso y gastos',
+                'Análisis de distribución de gastos por categorías',
+            ],
+        },
+    },
+    {
         id: 'daymark',
         name: 'DayMark',
         description: {
